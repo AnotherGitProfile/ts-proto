@@ -27,7 +27,37 @@ export interface PleaseChoose {
   thirdOption: string | undefined;
 }
 
+export interface PleaseChoose_Original {
+  name: string;
+  /**
+   *  Use this if you want a number. Numbers are great. Who doesn't
+   *  like them?
+   */
+  aNumber: number | undefined;
+  /**
+   *  Use this if you want a string. Strings are also nice. Not as
+   *  nice as numbers, but what are you going to do...
+   */
+  aString: string | undefined;
+  aMessage: PleaseChoose_Submessage_Original | undefined;
+  /**
+   *  We also added a bool option! This was added after the 'age'
+   *  field, so it has a higher number.
+   */
+  aBool: boolean | undefined;
+  bunchaBytes: Uint8Array | undefined;
+  anEnum: PleaseChoose_StateEnum | undefined;
+  age: number;
+  either: string | undefined;
+  or: string | undefined;
+  thirdOption: string | undefined;
+}
+
 export interface PleaseChoose_Submessage {
+  name: string;
+}
+
+export interface PleaseChoose_Submessage_Original {
   name: string;
 }
 
@@ -274,6 +304,65 @@ export const PleaseChoose = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<PleaseChoose_Original>): PleaseChoose {
+    const message = { ...basePleaseChoose } as PleaseChoose;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    if (object.aNumber !== undefined && object.aNumber !== null) {
+      message.aNumber = object.aNumber;
+    } else {
+      message.aNumber = undefined;
+    }
+    if (object.aString !== undefined && object.aString !== null) {
+      message.aString = object.aString;
+    } else {
+      message.aString = undefined;
+    }
+    if (object.aMessage !== undefined && object.aMessage !== null) {
+      message.aMessage = PleaseChoose_Submessage.fromWrappedPartial(object.aMessage);
+    } else {
+      message.aMessage = undefined;
+    }
+    if (object.aBool !== undefined && object.aBool !== null) {
+      message.aBool = object.aBool;
+    } else {
+      message.aBool = undefined;
+    }
+    if (object.bunchaBytes !== undefined && object.bunchaBytes !== null) {
+      message.bunchaBytes = object.bunchaBytes;
+    } else {
+      message.bunchaBytes = undefined;
+    }
+    if (object.anEnum !== undefined && object.anEnum !== null) {
+      message.anEnum = object.anEnum;
+    } else {
+      message.anEnum = undefined;
+    }
+    if (object.age !== undefined && object.age !== null) {
+      message.age = object.age;
+    } else {
+      message.age = 0;
+    }
+    if (object.either !== undefined && object.either !== null) {
+      message.either = object.either;
+    } else {
+      message.either = undefined;
+    }
+    if (object.or !== undefined && object.or !== null) {
+      message.or = object.or;
+    } else {
+      message.or = undefined;
+    }
+    if (object.thirdOption !== undefined && object.thirdOption !== null) {
+      message.thirdOption = object.thirdOption;
+    } else {
+      message.thirdOption = undefined;
+    }
+    return message;
+  },
   toJSON(message: PleaseChoose): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
@@ -323,6 +412,15 @@ export const PleaseChoose_Submessage = {
     return message;
   },
   fromPartial(object: DeepPartial<PleaseChoose_Submessage>): PleaseChoose_Submessage {
+    const message = { ...basePleaseChoose_Submessage } as PleaseChoose_Submessage;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<PleaseChoose_Submessage_Original>): PleaseChoose_Submessage {
     const message = { ...basePleaseChoose_Submessage } as PleaseChoose_Submessage;
     if (object.name !== undefined && object.name !== null) {
       message.name = object.name;

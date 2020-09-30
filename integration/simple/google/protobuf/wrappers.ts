@@ -15,11 +15,35 @@ export interface DoubleValue {
 }
 
 /**
+ *  Wrapper message for `double`.
+ *
+ *  The JSON representation for `DoubleValue` is JSON number.
+ */
+export interface DoubleValue_Original {
+  /**
+   *  The double value.
+   */
+  value: number;
+}
+
+/**
  *  Wrapper message for `float`.
  *
  *  The JSON representation for `FloatValue` is JSON number.
  */
 export interface FloatValue {
+  /**
+   *  The float value.
+   */
+  value: number;
+}
+
+/**
+ *  Wrapper message for `float`.
+ *
+ *  The JSON representation for `FloatValue` is JSON number.
+ */
+export interface FloatValue_Original {
   /**
    *  The float value.
    */
@@ -39,11 +63,35 @@ export interface Int64Value {
 }
 
 /**
+ *  Wrapper message for `int64`.
+ *
+ *  The JSON representation for `Int64Value` is JSON string.
+ */
+export interface Int64Value_Original {
+  /**
+   *  The int64 value.
+   */
+  value: number;
+}
+
+/**
  *  Wrapper message for `uint64`.
  *
  *  The JSON representation for `UInt64Value` is JSON string.
  */
 export interface UInt64Value {
+  /**
+   *  The uint64 value.
+   */
+  value: number;
+}
+
+/**
+ *  Wrapper message for `uint64`.
+ *
+ *  The JSON representation for `UInt64Value` is JSON string.
+ */
+export interface UInt64Value_Original {
   /**
    *  The uint64 value.
    */
@@ -63,11 +111,35 @@ export interface Int32Value {
 }
 
 /**
+ *  Wrapper message for `int32`.
+ *
+ *  The JSON representation for `Int32Value` is JSON number.
+ */
+export interface Int32Value_Original {
+  /**
+   *  The int32 value.
+   */
+  value: number;
+}
+
+/**
  *  Wrapper message for `uint32`.
  *
  *  The JSON representation for `UInt32Value` is JSON number.
  */
 export interface UInt32Value {
+  /**
+   *  The uint32 value.
+   */
+  value: number;
+}
+
+/**
+ *  Wrapper message for `uint32`.
+ *
+ *  The JSON representation for `UInt32Value` is JSON number.
+ */
+export interface UInt32Value_Original {
   /**
    *  The uint32 value.
    */
@@ -87,6 +159,18 @@ export interface BoolValue {
 }
 
 /**
+ *  Wrapper message for `bool`.
+ *
+ *  The JSON representation for `BoolValue` is JSON `true` and `false`.
+ */
+export interface BoolValue_Original {
+  /**
+   *  The bool value.
+   */
+  value: boolean;
+}
+
+/**
  *  Wrapper message for `string`.
  *
  *  The JSON representation for `StringValue` is JSON string.
@@ -99,11 +183,35 @@ export interface StringValue {
 }
 
 /**
+ *  Wrapper message for `string`.
+ *
+ *  The JSON representation for `StringValue` is JSON string.
+ */
+export interface StringValue_Original {
+  /**
+   *  The string value.
+   */
+  value: string;
+}
+
+/**
  *  Wrapper message for `bytes`.
  *
  *  The JSON representation for `BytesValue` is JSON string.
  */
 export interface BytesValue {
+  /**
+   *  The bytes value.
+   */
+  value: Uint8Array;
+}
+
+/**
+ *  Wrapper message for `bytes`.
+ *
+ *  The JSON representation for `BytesValue` is JSON string.
+ */
+export interface BytesValue_Original {
   /**
    *  The bytes value.
    */
@@ -192,6 +300,15 @@ export const DoubleValue = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<DoubleValue_Original>): DoubleValue {
+    const message = { ...baseDoubleValue } as DoubleValue;
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    } else {
+      message.value = 0;
+    }
+    return message;
+  },
   toJSON(message: DoubleValue): unknown {
     const obj: any = {};
     message.value !== undefined && (obj.value = message.value);
@@ -231,6 +348,15 @@ export const FloatValue = {
     return message;
   },
   fromPartial(object: DeepPartial<FloatValue>): FloatValue {
+    const message = { ...baseFloatValue } as FloatValue;
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    } else {
+      message.value = 0;
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<FloatValue_Original>): FloatValue {
     const message = { ...baseFloatValue } as FloatValue;
     if (object.value !== undefined && object.value !== null) {
       message.value = object.value;
@@ -286,6 +412,15 @@ export const Int64Value = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<Int64Value_Original>): Int64Value {
+    const message = { ...baseInt64Value } as Int64Value;
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    } else {
+      message.value = 0;
+    }
+    return message;
+  },
   toJSON(message: Int64Value): unknown {
     const obj: any = {};
     message.value !== undefined && (obj.value = message.value);
@@ -325,6 +460,15 @@ export const UInt64Value = {
     return message;
   },
   fromPartial(object: DeepPartial<UInt64Value>): UInt64Value {
+    const message = { ...baseUInt64Value } as UInt64Value;
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    } else {
+      message.value = 0;
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<UInt64Value_Original>): UInt64Value {
     const message = { ...baseUInt64Value } as UInt64Value;
     if (object.value !== undefined && object.value !== null) {
       message.value = object.value;
@@ -380,6 +524,15 @@ export const Int32Value = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<Int32Value_Original>): Int32Value {
+    const message = { ...baseInt32Value } as Int32Value;
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    } else {
+      message.value = 0;
+    }
+    return message;
+  },
   toJSON(message: Int32Value): unknown {
     const obj: any = {};
     message.value !== undefined && (obj.value = message.value);
@@ -419,6 +572,15 @@ export const UInt32Value = {
     return message;
   },
   fromPartial(object: DeepPartial<UInt32Value>): UInt32Value {
+    const message = { ...baseUInt32Value } as UInt32Value;
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    } else {
+      message.value = 0;
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<UInt32Value_Original>): UInt32Value {
     const message = { ...baseUInt32Value } as UInt32Value;
     if (object.value !== undefined && object.value !== null) {
       message.value = object.value;
@@ -474,6 +636,15 @@ export const BoolValue = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<BoolValue_Original>): BoolValue {
+    const message = { ...baseBoolValue } as BoolValue;
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    } else {
+      message.value = false;
+    }
+    return message;
+  },
   toJSON(message: BoolValue): unknown {
     const obj: any = {};
     message.value !== undefined && (obj.value = message.value);
@@ -521,6 +692,15 @@ export const StringValue = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<StringValue_Original>): StringValue {
+    const message = { ...baseStringValue } as StringValue;
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    } else {
+      message.value = "";
+    }
+    return message;
+  },
   toJSON(message: StringValue): unknown {
     const obj: any = {};
     message.value !== undefined && (obj.value = message.value);
@@ -558,6 +738,15 @@ export const BytesValue = {
     return message;
   },
   fromPartial(object: DeepPartial<BytesValue>): BytesValue {
+    const message = { ...baseBytesValue } as BytesValue;
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    } else {
+      message.value = new Uint8Array();
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<BytesValue_Original>): BytesValue {
     const message = { ...baseBytesValue } as BytesValue;
     if (object.value !== undefined && object.value !== null) {
       message.value = object.value;

@@ -24,13 +24,50 @@ export interface PleaseChoose {
   eitherOr?: { $case: 'either', either: string } | { $case: 'or', or: string } | { $case: 'thirdOption', thirdOption: string };
 }
 
+export interface PleaseChoose_Original {
+  name: string;
+  /**
+   *  Use this if you want a number. Numbers are great. Who doesn't
+   *  like them?
+   */
+  aNumber: number;
+  /**
+   *  Use this if you want a string. Strings are also nice. Not as
+   *  nice as numbers, but what are you going to do...
+   */
+  aString: string;
+  aMessage: PleaseChoose_Submessage_Original;
+  /**
+   *  We also added a bool option! This was added after the 'age'
+   *  field, so it has a higher number.
+   */
+  aBool: boolean;
+  bunchaBytes: Uint8Array;
+  anEnum: PleaseChoose_StateEnum;
+  age: number;
+  either: string;
+  or: string;
+  thirdOption: string;
+}
+
 export interface PleaseChoose_Submessage {
+  name: string;
+}
+
+export interface PleaseChoose_Submessage_Original {
   name: string;
 }
 
 /**
  * * For testing proto3's field presence feature.  */
 export interface SimpleButOptional {
+  name?: string | undefined;
+  age?: number | undefined;
+}
+
+/**
+ * * For testing proto3's field presence feature.  */
+export interface SimpleButOptional_Original {
   name?: string | undefined;
   age?: number | undefined;
 }
@@ -239,6 +276,43 @@ export const PleaseChoose = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<PleaseChoose_Original>): PleaseChoose {
+    const message = { ...basePleaseChoose } as PleaseChoose;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    }
+    if (object.aNumber !== undefined && object.aNumber !== null) {
+      message.choice = {$case: 'aNumber', aNumber: object.aNumber};
+    }
+    if (object.aString !== undefined && object.aString !== null) {
+      message.choice = {$case: 'aString', aString: object.aString};
+    }
+    if (object.aMessage !== undefined && object.aMessage !== null) {
+      message.choice = {$case: 'aMessage', aMessage: PleaseChoose_Submessage.fromWrappedPartial(object.aMessage)};
+    }
+    if (object.aBool !== undefined && object.aBool !== null) {
+      message.choice = {$case: 'aBool', aBool: object.aBool};
+    }
+    if (object.bunchaBytes !== undefined && object.bunchaBytes !== null) {
+      message.choice = {$case: 'bunchaBytes', bunchaBytes: object.bunchaBytes};
+    }
+    if (object.anEnum !== undefined && object.anEnum !== null) {
+      message.choice = {$case: 'anEnum', anEnum: object.anEnum};
+    }
+    if (object.age !== undefined && object.age !== null) {
+      message.age = object.age;
+    }
+    if (object.either !== undefined && object.either !== null) {
+      message.eitherOr = {$case: 'either', either: object.either};
+    }
+    if (object.or !== undefined && object.or !== null) {
+      message.eitherOr = {$case: 'or', or: object.or};
+    }
+    if (object.thirdOption !== undefined && object.thirdOption !== null) {
+      message.eitherOr = {$case: 'thirdOption', thirdOption: object.thirdOption};
+    }
+    return message;
+  },
   toJSON(message: PleaseChoose): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
@@ -286,6 +360,13 @@ export const PleaseChoose_Submessage = {
     return message;
   },
   fromPartial(object: DeepPartial<PleaseChoose_Submessage>): PleaseChoose_Submessage {
+    const message = { ...basePleaseChoose_Submessage } as PleaseChoose_Submessage;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<PleaseChoose_Submessage_Original>): PleaseChoose_Submessage {
     const message = { ...basePleaseChoose_Submessage } as PleaseChoose_Submessage;
     if (object.name !== undefined && object.name !== null) {
       message.name = object.name;
@@ -340,6 +421,16 @@ export const SimpleButOptional = {
     return message;
   },
   fromPartial(object: DeepPartial<SimpleButOptional>): SimpleButOptional {
+    const message = { ...baseSimpleButOptional } as SimpleButOptional;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    }
+    if (object.age !== undefined && object.age !== null) {
+      message.age = object.age;
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<SimpleButOptional_Original>): SimpleButOptional {
     const message = { ...baseSimpleButOptional } as SimpleButOptional;
     if (object.name !== undefined && object.name !== null) {
       message.name = object.name;

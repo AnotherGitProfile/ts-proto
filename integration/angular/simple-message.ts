@@ -5,6 +5,10 @@ export interface SimpleMessage {
   numberField: number;
 }
 
+export interface SimpleMessage_Original {
+  numberField: number;
+}
+
 const baseSimpleMessage: object = {
   numberField: 0,
 };
@@ -41,6 +45,15 @@ export const SimpleMessage = {
     return message;
   },
   fromPartial(object: DeepPartial<SimpleMessage>): SimpleMessage {
+    const message = { ...baseSimpleMessage } as SimpleMessage;
+    if (object.numberField !== undefined && object.numberField !== null) {
+      message.numberField = object.numberField;
+    } else {
+      message.numberField = 0;
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<SimpleMessage_Original>): SimpleMessage {
     const message = { ...baseSimpleMessage } as SimpleMessage;
     if (object.numberField !== undefined && object.numberField !== null) {
       message.numberField = object.numberField;

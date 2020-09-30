@@ -63,7 +63,7 @@ export function basicTypeName(
   typeMap: TypeMap,
   field: FieldDescriptorProto,
   options: Options,
-  typeOptions: { keepValueType?: boolean } = {}
+  typeOptions: { keepValueType?: boolean; useOriginal?: boolean } = {}
 ): TypeName {
   switch (field.type) {
     case FieldDescriptorProto.Type.TYPE_DOUBLE:
@@ -331,7 +331,7 @@ export function messageToTypeName(
   typeMap: TypeMap,
   protoType: string,
   options: Options,
-  typeOptions: { keepValueType?: boolean; repeated?: boolean } = {}
+  typeOptions: { keepValueType?: boolean; repeated?: boolean; useOriginal?: boolean } = {}
 ): TypeName {
   // Watch for the wrapper types `.google.protobuf.*Value`. If we're mapping
   // them to basic built-in types, we union the type with undefined to
@@ -350,7 +350,10 @@ export function messageToTypeName(
   if (!typeOptions.keepValueType && protoType in mappedTypes) {
     return mappedTypes[protoType];
   }
-  const [module, type] = toModuleAndType(typeMap, protoType);
+  let [module, type, descriptor] = toModuleAndType(typeMap, protoType);
+  if (!!typeOptions.useOriginal && !(descriptor instanceof EnumDescriptorProto)) {
+    type = `${type}_Original`;
+  }
   return TypeNames.importedType(`${type}@./${module}`);
 }
 
@@ -369,9 +372,11 @@ export function toTypeName(
   typeMap: TypeMap,
   messageDesc: DescriptorProto,
   field: FieldDescriptorProto,
-  options: Options
+  options: Options,
+  keepValueType: boolean = false,
+  useOriginal: boolean = false
 ): TypeName {
-  let type = basicTypeName(typeMap, field, options, { keepValueType: false });
+  let type = basicTypeName(typeMap, field, options, { keepValueType: keepValueType, useOriginal: useOriginal });
   if (isRepeated(field)) {
     const mapType = detectMapType(typeMap, messageDesc, field, options);
     if (mapType) {

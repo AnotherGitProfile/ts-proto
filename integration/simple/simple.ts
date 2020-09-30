@@ -1,12 +1,12 @@
 //  Adding a comment to the syntax will become the first
 //  comment in the output source file.
 //
-import { ImportedThing } from './import_dir/thing';
-import { DateMessage } from './google/type/date';
+import { ImportedThing, ImportedThing_Original } from './import_dir/thing';
+import { DateMessage, DateMessage_Original } from './google/type/date';
+import { Timestamp_Original, Timestamp } from './google/protobuf/timestamp';
+import { StringValue_Original, Int32Value_Original, BoolValue_Original, StringValue, Int32Value, BoolValue } from './google/protobuf/wrappers';
 import { Reader, Writer, util, configure } from 'protobufjs/minimal';
-import { Timestamp } from './google/protobuf/timestamp';
 import * as Long from 'long';
-import { StringValue, Int32Value, BoolValue } from './google/protobuf/wrappers';
 
 
 /**
@@ -38,7 +38,41 @@ export interface Simple {
   blob: Uint8Array;
 }
 
+/**
+ * * Example comment on the Simple message  */
+export interface Simple_Original {
+  /**
+   *  Name field
+   */
+  name: string;
+  /**
+   *  Age  */
+  age: number;
+  /**
+   *  This comment will also attach
+   */
+  createdAt: Timestamp_Original | undefined;
+  child: Child_Original | undefined;
+  state: StateEnum;
+  grandChildren: Child_Original[];
+  coins: number[];
+  snacks: string[];
+  oldStates: StateEnum[];
+  /**
+   *  A thing (imported from thing)
+   */
+  thing: ImportedThing_Original | undefined;
+  blobs: Uint8Array[];
+  birthday: DateMessage_Original | undefined;
+  blob: Uint8Array;
+}
+
 export interface Child {
+  name: string;
+  type: Child_Type;
+}
+
+export interface Child_Original {
   name: string;
   type: Child_Type;
 }
@@ -46,6 +80,12 @@ export interface Child {
 export interface Nested {
   name: string;
   message: Nested_InnerMessage | undefined;
+  state: Nested_InnerEnum;
+}
+
+export interface Nested_Original {
+  name: string;
+  message: Nested_InnerMessage_Original | undefined;
   state: Nested_InnerEnum;
 }
 
@@ -57,11 +97,28 @@ export interface Nested_InnerMessage {
   deep: Nested_InnerMessage_DeepMessage | undefined;
 }
 
+/**
+ *  Comment for a nested message * /
+ */
+export interface Nested_InnerMessage_Original {
+  name: string;
+  deep: Nested_InnerMessage_DeepMessage_Original | undefined;
+}
+
 export interface Nested_InnerMessage_DeepMessage {
   name: string;
 }
 
+export interface Nested_InnerMessage_DeepMessage_Original {
+  name: string;
+}
+
 export interface OneOfMessage {
+  first: string | undefined;
+  last: string | undefined;
+}
+
+export interface OneOfMessage_Original {
   first: string | undefined;
   last: string | undefined;
 }
@@ -74,11 +131,31 @@ export interface SimpleWithWrappers {
   snacks: string[];
 }
 
+export interface SimpleWithWrappers_Original {
+  name: StringValue_Original;
+  age: Int32Value_Original;
+  enabled: BoolValue_Original;
+  coins: Int32Value_Original[];
+  snacks: StringValue_Original[];
+}
+
 export interface Entity {
   id: number;
 }
 
+export interface Entity_Original {
+  id: number;
+}
+
 export interface SimpleWithMap {
+  entitiesById: { [key: number]: Entity };
+  nameLookup: { [key: string]: string };
+  intLookup: { [key: number]: number };
+  mapOfTimestamps: { [key: string]: Date };
+  mapOfBytes: { [key: string]: Uint8Array };
+}
+
+export interface SimpleWithMap_Original {
   entitiesById: { [key: number]: Entity };
   nameLookup: { [key: string]: string };
   intLookup: { [key: number]: number };
@@ -91,7 +168,17 @@ export interface SimpleWithMap_EntitiesByIdEntry {
   value: Entity | undefined;
 }
 
+export interface SimpleWithMap_EntitiesByIdEntry_Original {
+  key: number;
+  value: Entity_Original | undefined;
+}
+
 export interface SimpleWithMap_NameLookupEntry {
+  key: string;
+  value: string;
+}
+
+export interface SimpleWithMap_NameLookupEntry_Original {
   key: string;
   value: string;
 }
@@ -101,12 +188,27 @@ export interface SimpleWithMap_IntLookupEntry {
   value: number;
 }
 
+export interface SimpleWithMap_IntLookupEntry_Original {
+  key: number;
+  value: number;
+}
+
 export interface SimpleWithMap_MapOfTimestampsEntry {
   key: string;
   value: Date | undefined;
 }
 
+export interface SimpleWithMap_MapOfTimestampsEntry_Original {
+  key: string;
+  value: Timestamp_Original | undefined;
+}
+
 export interface SimpleWithMap_MapOfBytesEntry {
+  key: string;
+  value: Uint8Array;
+}
+
+export interface SimpleWithMap_MapOfBytesEntry_Original {
   key: string;
   value: Uint8Array;
 }
@@ -115,12 +217,25 @@ export interface SimpleWithSnakeCaseMap {
   entitiesById: { [key: number]: Entity };
 }
 
+export interface SimpleWithSnakeCaseMap_Original {
+  entitiesById: { [key: number]: Entity };
+}
+
 export interface SimpleWithSnakeCaseMap_EntitiesByIdEntry {
   key: number;
   value: Entity | undefined;
 }
 
+export interface SimpleWithSnakeCaseMap_EntitiesByIdEntry_Original {
+  key: number;
+  value: Entity_Original | undefined;
+}
+
 export interface SimpleWithMapOfEnums {
+  enumsById: { [key: number]: StateEnum };
+}
+
+export interface SimpleWithMapOfEnums_Original {
   enumsById: { [key: number]: StateEnum };
 }
 
@@ -129,7 +244,16 @@ export interface SimpleWithMapOfEnums_EnumsByIdEntry {
   value: StateEnum;
 }
 
+export interface SimpleWithMapOfEnums_EnumsByIdEntry_Original {
+  key: number;
+  value: StateEnum;
+}
+
 export interface PingRequest {
+  input: string;
+}
+
+export interface PingRequest_Original {
   input: string;
 }
 
@@ -137,7 +261,26 @@ export interface PingResponse {
   output: string;
 }
 
+export interface PingResponse_Original {
+  output: string;
+}
+
 export interface Numbers {
+  double: number;
+  float: number;
+  int32: number;
+  int64: number;
+  uint32: number;
+  uint64: number;
+  sint32: number;
+  sint64: number;
+  fixed32: number;
+  fixed64: number;
+  sfixed32: number;
+  sfixed64: number;
+}
+
+export interface Numbers_Original {
   double: number;
   float: number;
   int32: number;
@@ -175,7 +318,33 @@ export interface SimpleButOptional {
   birthday?: DateMessage | undefined;
 }
 
+/**
+ * * For testing proto3's field presence feature.  */
+export interface SimpleButOptional_Original {
+  /**
+   *  Name field
+   */
+  name?: string | undefined;
+  /**
+   *  Age  */
+  age?: number | undefined;
+  /**
+   *  This comment will also attach
+   */
+  createdAt?: Timestamp_Original | undefined;
+  child?: Child_Original | undefined;
+  state?: StateEnum | undefined;
+  /**
+   *  A thing (imported from thing)
+   */
+  thing?: ImportedThing_Original | undefined;
+  birthday?: DateMessage_Original | undefined;
+}
+
 export interface Empty {
+}
+
+export interface Empty_Original {
 }
 
 const baseSimple: object = {
@@ -712,6 +881,80 @@ export const Simple = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<Simple_Original>): Simple {
+    const message = { ...baseSimple } as Simple;
+    message.grandChildren = [];
+    message.coins = [];
+    message.snacks = [];
+    message.oldStates = [];
+    message.blobs = [];
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    if (object.age !== undefined && object.age !== null) {
+      message.age = object.age;
+    } else {
+      message.age = 0;
+    }
+    if (object.createdAt !== undefined && object.createdAt !== null) {
+      message.createdAt = fromJsonTimestamp(object.createdAt);
+    } else {
+      message.createdAt = undefined;
+    }
+    if (object.child !== undefined && object.child !== null) {
+      message.child = Child.fromWrappedPartial(object.child);
+    } else {
+      message.child = undefined;
+    }
+    if (object.state !== undefined && object.state !== null) {
+      message.state = object.state;
+    } else {
+      message.state = 0;
+    }
+    if (object.grandChildren !== undefined && object.grandChildren !== null) {
+      for (const e of object.grandChildren) {
+        message.grandChildren.push(Child.fromWrappedPartial(e));
+      }
+    }
+    if (object.coins !== undefined && object.coins !== null) {
+      for (const e of object.coins) {
+        message.coins.push(e);
+      }
+    }
+    if (object.snacks !== undefined && object.snacks !== null) {
+      for (const e of object.snacks) {
+        message.snacks.push(e);
+      }
+    }
+    if (object.oldStates !== undefined && object.oldStates !== null) {
+      for (const e of object.oldStates) {
+        message.oldStates.push(e);
+      }
+    }
+    if (object.thing !== undefined && object.thing !== null) {
+      message.thing = ImportedThing.fromWrappedPartial(object.thing);
+    } else {
+      message.thing = undefined;
+    }
+    if (object.blobs !== undefined && object.blobs !== null) {
+      for (const e of object.blobs) {
+        message.blobs.push(e);
+      }
+    }
+    if (object.birthday !== undefined && object.birthday !== null) {
+      message.birthday = DateMessage.fromWrappedPartial(object.birthday);
+    } else {
+      message.birthday = undefined;
+    }
+    if (object.blob !== undefined && object.blob !== null) {
+      message.blob = object.blob;
+    } else {
+      message.blob = new Uint8Array();
+    }
+    return message;
+  },
   toJSON(message: Simple): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
@@ -805,6 +1048,20 @@ export const Child = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<Child_Original>): Child {
+    const message = { ...baseChild } as Child;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    if (object.type !== undefined && object.type !== null) {
+      message.type = object.type;
+    } else {
+      message.type = 0;
+    }
+    return message;
+  },
   toJSON(message: Child): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
@@ -883,6 +1140,25 @@ export const Nested = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<Nested_Original>): Nested {
+    const message = { ...baseNested } as Nested;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    if (object.message !== undefined && object.message !== null) {
+      message.message = Nested_InnerMessage.fromWrappedPartial(object.message);
+    } else {
+      message.message = undefined;
+    }
+    if (object.state !== undefined && object.state !== null) {
+      message.state = object.state;
+    } else {
+      message.state = 0;
+    }
+    return message;
+  },
   toJSON(message: Nested): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
@@ -948,6 +1224,20 @@ export const Nested_InnerMessage = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<Nested_InnerMessage_Original>): Nested_InnerMessage {
+    const message = { ...baseNested_InnerMessage } as Nested_InnerMessage;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    if (object.deep !== undefined && object.deep !== null) {
+      message.deep = Nested_InnerMessage_DeepMessage.fromWrappedPartial(object.deep);
+    } else {
+      message.deep = undefined;
+    }
+    return message;
+  },
   toJSON(message: Nested_InnerMessage): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
@@ -988,6 +1278,15 @@ export const Nested_InnerMessage_DeepMessage = {
     return message;
   },
   fromPartial(object: DeepPartial<Nested_InnerMessage_DeepMessage>): Nested_InnerMessage_DeepMessage {
+    const message = { ...baseNested_InnerMessage_DeepMessage } as Nested_InnerMessage_DeepMessage;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<Nested_InnerMessage_DeepMessage_Original>): Nested_InnerMessage_DeepMessage {
     const message = { ...baseNested_InnerMessage_DeepMessage } as Nested_InnerMessage_DeepMessage;
     if (object.name !== undefined && object.name !== null) {
       message.name = object.name;
@@ -1048,6 +1347,20 @@ export const OneOfMessage = {
     return message;
   },
   fromPartial(object: DeepPartial<OneOfMessage>): OneOfMessage {
+    const message = { ...baseOneOfMessage } as OneOfMessage;
+    if (object.first !== undefined && object.first !== null) {
+      message.first = object.first;
+    } else {
+      message.first = undefined;
+    }
+    if (object.last !== undefined && object.last !== null) {
+      message.last = object.last;
+    } else {
+      message.last = undefined;
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<OneOfMessage_Original>): OneOfMessage {
     const message = { ...baseOneOfMessage } as OneOfMessage;
     if (object.first !== undefined && object.first !== null) {
       message.first = object.first;
@@ -1181,6 +1494,37 @@ export const SimpleWithWrappers = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<SimpleWithWrappers_Original>): SimpleWithWrappers {
+    const message = { ...baseSimpleWithWrappers } as SimpleWithWrappers;
+    message.coins = [];
+    message.snacks = [];
+    if (object.name !== undefined && object.name !== null) {
+      message.name = String(object.name.value);
+    } else {
+      message.name = undefined;
+    }
+    if (object.age !== undefined && object.age !== null) {
+      message.age = Number(object.age.value);
+    } else {
+      message.age = undefined;
+    }
+    if (object.enabled !== undefined && object.enabled !== null) {
+      message.enabled = Boolean(object.enabled.value);
+    } else {
+      message.enabled = undefined;
+    }
+    if (object.coins !== undefined && object.coins !== null) {
+      for (const e of object.coins) {
+        message.coins.push(Number(e.value));
+      }
+    }
+    if (object.snacks !== undefined && object.snacks !== null) {
+      for (const e of object.snacks) {
+        message.snacks.push(String(e.value));
+      }
+    }
+    return message;
+  },
   toJSON(message: SimpleWithWrappers): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
@@ -1232,6 +1576,15 @@ export const Entity = {
     return message;
   },
   fromPartial(object: DeepPartial<Entity>): Entity {
+    const message = { ...baseEntity } as Entity;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<Entity_Original>): Entity {
     const message = { ...baseEntity } as Entity;
     if (object.id !== undefined && object.id !== null) {
       message.id = object.id;
@@ -1393,6 +1746,50 @@ export const SimpleWithMap = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<SimpleWithMap_Original>): SimpleWithMap {
+    const message = { ...baseSimpleWithMap } as SimpleWithMap;
+    message.entitiesById = {};
+    message.nameLookup = {};
+    message.intLookup = {};
+    message.mapOfTimestamps = {};
+    message.mapOfBytes = {};
+    if (object.entitiesById !== undefined && object.entitiesById !== null) {
+      Object.entries(object.entitiesById).forEach(([key, value]) => {
+        if (value !== undefined) {
+          message.entitiesById[Number(key)] = Entity.fromWrappedPartial(value);
+        }
+      })
+    }
+    if (object.nameLookup !== undefined && object.nameLookup !== null) {
+      Object.entries(object.nameLookup).forEach(([key, value]) => {
+        if (value !== undefined) {
+          message.nameLookup[key] = String(value);
+        }
+      })
+    }
+    if (object.intLookup !== undefined && object.intLookup !== null) {
+      Object.entries(object.intLookup).forEach(([key, value]) => {
+        if (value !== undefined) {
+          message.intLookup[Number(key)] = Number(value);
+        }
+      })
+    }
+    if (object.mapOfTimestamps !== undefined && object.mapOfTimestamps !== null) {
+      Object.entries(object.mapOfTimestamps).forEach(([key, value]) => {
+        if (value !== undefined) {
+          message.mapOfTimestamps[key] = value;
+        }
+      })
+    }
+    if (object.mapOfBytes !== undefined && object.mapOfBytes !== null) {
+      Object.entries(object.mapOfBytes).forEach(([key, value]) => {
+        if (value !== undefined) {
+          message.mapOfBytes[key] = value;
+        }
+      })
+    }
+    return message;
+  },
   toJSON(message: SimpleWithMap): unknown {
     const obj: any = {};
     obj.entitiesById = {};
@@ -1485,6 +1882,20 @@ export const SimpleWithMap_EntitiesByIdEntry = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<SimpleWithMap_EntitiesByIdEntry_Original>): SimpleWithMap_EntitiesByIdEntry {
+    const message = { ...baseSimpleWithMap_EntitiesByIdEntry } as SimpleWithMap_EntitiesByIdEntry;
+    if (object.key !== undefined && object.key !== null) {
+      message.key = object.key;
+    } else {
+      message.key = 0;
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = Entity.fromWrappedPartial(object.value);
+    } else {
+      message.value = undefined;
+    }
+    return message;
+  },
   toJSON(message: SimpleWithMap_EntitiesByIdEntry): unknown {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
@@ -1547,6 +1958,20 @@ export const SimpleWithMap_NameLookupEntry = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<SimpleWithMap_NameLookupEntry_Original>): SimpleWithMap_NameLookupEntry {
+    const message = { ...baseSimpleWithMap_NameLookupEntry } as SimpleWithMap_NameLookupEntry;
+    if (object.key !== undefined && object.key !== null) {
+      message.key = object.key;
+    } else {
+      message.key = "";
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    } else {
+      message.value = "";
+    }
+    return message;
+  },
   toJSON(message: SimpleWithMap_NameLookupEntry): unknown {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
@@ -1596,6 +2021,20 @@ export const SimpleWithMap_IntLookupEntry = {
     return message;
   },
   fromPartial(object: DeepPartial<SimpleWithMap_IntLookupEntry>): SimpleWithMap_IntLookupEntry {
+    const message = { ...baseSimpleWithMap_IntLookupEntry } as SimpleWithMap_IntLookupEntry;
+    if (object.key !== undefined && object.key !== null) {
+      message.key = object.key;
+    } else {
+      message.key = 0;
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    } else {
+      message.value = 0;
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<SimpleWithMap_IntLookupEntry_Original>): SimpleWithMap_IntLookupEntry {
     const message = { ...baseSimpleWithMap_IntLookupEntry } as SimpleWithMap_IntLookupEntry;
     if (object.key !== undefined && object.key !== null) {
       message.key = object.key;
@@ -1673,6 +2112,20 @@ export const SimpleWithMap_MapOfTimestampsEntry = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<SimpleWithMap_MapOfTimestampsEntry_Original>): SimpleWithMap_MapOfTimestampsEntry {
+    const message = { ...baseSimpleWithMap_MapOfTimestampsEntry } as SimpleWithMap_MapOfTimestampsEntry;
+    if (object.key !== undefined && object.key !== null) {
+      message.key = object.key;
+    } else {
+      message.key = "";
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = fromJsonTimestamp(object.value);
+    } else {
+      message.value = undefined;
+    }
+    return message;
+  },
   toJSON(message: SimpleWithMap_MapOfTimestampsEntry): unknown {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
@@ -1720,6 +2173,20 @@ export const SimpleWithMap_MapOfBytesEntry = {
     return message;
   },
   fromPartial(object: DeepPartial<SimpleWithMap_MapOfBytesEntry>): SimpleWithMap_MapOfBytesEntry {
+    const message = { ...baseSimpleWithMap_MapOfBytesEntry } as SimpleWithMap_MapOfBytesEntry;
+    if (object.key !== undefined && object.key !== null) {
+      message.key = object.key;
+    } else {
+      message.key = "";
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    } else {
+      message.value = new Uint8Array();
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<SimpleWithMap_MapOfBytesEntry_Original>): SimpleWithMap_MapOfBytesEntry {
     const message = { ...baseSimpleWithMap_MapOfBytesEntry } as SimpleWithMap_MapOfBytesEntry;
     if (object.key !== undefined && object.key !== null) {
       message.key = object.key;
@@ -1786,6 +2253,18 @@ export const SimpleWithSnakeCaseMap = {
       Object.entries(object.entitiesById).forEach(([key, value]) => {
         if (value !== undefined) {
           message.entitiesById[Number(key)] = Entity.fromPartial(value);
+        }
+      })
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<SimpleWithSnakeCaseMap_Original>): SimpleWithSnakeCaseMap {
+    const message = { ...baseSimpleWithSnakeCaseMap } as SimpleWithSnakeCaseMap;
+    message.entitiesById = {};
+    if (object.entitiesById !== undefined && object.entitiesById !== null) {
+      Object.entries(object.entitiesById).forEach(([key, value]) => {
+        if (value !== undefined) {
+          message.entitiesById[Number(key)] = Entity.fromWrappedPartial(value);
         }
       })
     }
@@ -1859,6 +2338,20 @@ export const SimpleWithSnakeCaseMap_EntitiesByIdEntry = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<SimpleWithSnakeCaseMap_EntitiesByIdEntry_Original>): SimpleWithSnakeCaseMap_EntitiesByIdEntry {
+    const message = { ...baseSimpleWithSnakeCaseMap_EntitiesByIdEntry } as SimpleWithSnakeCaseMap_EntitiesByIdEntry;
+    if (object.key !== undefined && object.key !== null) {
+      message.key = object.key;
+    } else {
+      message.key = 0;
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = Entity.fromWrappedPartial(object.value);
+    } else {
+      message.value = undefined;
+    }
+    return message;
+  },
   toJSON(message: SimpleWithSnakeCaseMap_EntitiesByIdEntry): unknown {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
@@ -1906,6 +2399,18 @@ export const SimpleWithMapOfEnums = {
     return message;
   },
   fromPartial(object: DeepPartial<SimpleWithMapOfEnums>): SimpleWithMapOfEnums {
+    const message = { ...baseSimpleWithMapOfEnums } as SimpleWithMapOfEnums;
+    message.enumsById = {};
+    if (object.enumsById !== undefined && object.enumsById !== null) {
+      Object.entries(object.enumsById).forEach(([key, value]) => {
+        if (value !== undefined) {
+          message.enumsById[Number(key)] = value as number;
+        }
+      })
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<SimpleWithMapOfEnums_Original>): SimpleWithMapOfEnums {
     const message = { ...baseSimpleWithMapOfEnums } as SimpleWithMapOfEnums;
     message.enumsById = {};
     if (object.enumsById !== undefined && object.enumsById !== null) {
@@ -1983,6 +2488,20 @@ export const SimpleWithMapOfEnums_EnumsByIdEntry = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<SimpleWithMapOfEnums_EnumsByIdEntry_Original>): SimpleWithMapOfEnums_EnumsByIdEntry {
+    const message = { ...baseSimpleWithMapOfEnums_EnumsByIdEntry } as SimpleWithMapOfEnums_EnumsByIdEntry;
+    if (object.key !== undefined && object.key !== null) {
+      message.key = object.key;
+    } else {
+      message.key = 0;
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    } else {
+      message.value = 0;
+    }
+    return message;
+  },
   toJSON(message: SimpleWithMapOfEnums_EnumsByIdEntry): unknown {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
@@ -2031,6 +2550,15 @@ export const PingRequest = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<PingRequest_Original>): PingRequest {
+    const message = { ...basePingRequest } as PingRequest;
+    if (object.input !== undefined && object.input !== null) {
+      message.input = object.input;
+    } else {
+      message.input = "";
+    }
+    return message;
+  },
   toJSON(message: PingRequest): unknown {
     const obj: any = {};
     message.input !== undefined && (obj.input = message.input);
@@ -2070,6 +2598,15 @@ export const PingResponse = {
     return message;
   },
   fromPartial(object: DeepPartial<PingResponse>): PingResponse {
+    const message = { ...basePingResponse } as PingResponse;
+    if (object.output !== undefined && object.output !== null) {
+      message.output = object.output;
+    } else {
+      message.output = "";
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<PingResponse_Original>): PingResponse {
     const message = { ...basePingResponse } as PingResponse;
     if (object.output !== undefined && object.output !== null) {
       message.output = object.output;
@@ -2216,6 +2753,70 @@ export const Numbers = {
     return message;
   },
   fromPartial(object: DeepPartial<Numbers>): Numbers {
+    const message = { ...baseNumbers } as Numbers;
+    if (object.double !== undefined && object.double !== null) {
+      message.double = object.double;
+    } else {
+      message.double = 0;
+    }
+    if (object.float !== undefined && object.float !== null) {
+      message.float = object.float;
+    } else {
+      message.float = 0;
+    }
+    if (object.int32 !== undefined && object.int32 !== null) {
+      message.int32 = object.int32;
+    } else {
+      message.int32 = 0;
+    }
+    if (object.int64 !== undefined && object.int64 !== null) {
+      message.int64 = object.int64;
+    } else {
+      message.int64 = 0;
+    }
+    if (object.uint32 !== undefined && object.uint32 !== null) {
+      message.uint32 = object.uint32;
+    } else {
+      message.uint32 = 0;
+    }
+    if (object.uint64 !== undefined && object.uint64 !== null) {
+      message.uint64 = object.uint64;
+    } else {
+      message.uint64 = 0;
+    }
+    if (object.sint32 !== undefined && object.sint32 !== null) {
+      message.sint32 = object.sint32;
+    } else {
+      message.sint32 = 0;
+    }
+    if (object.sint64 !== undefined && object.sint64 !== null) {
+      message.sint64 = object.sint64;
+    } else {
+      message.sint64 = 0;
+    }
+    if (object.fixed32 !== undefined && object.fixed32 !== null) {
+      message.fixed32 = object.fixed32;
+    } else {
+      message.fixed32 = 0;
+    }
+    if (object.fixed64 !== undefined && object.fixed64 !== null) {
+      message.fixed64 = object.fixed64;
+    } else {
+      message.fixed64 = 0;
+    }
+    if (object.sfixed32 !== undefined && object.sfixed32 !== null) {
+      message.sfixed32 = object.sfixed32;
+    } else {
+      message.sfixed32 = 0;
+    }
+    if (object.sfixed64 !== undefined && object.sfixed64 !== null) {
+      message.sfixed64 = object.sfixed64;
+    } else {
+      message.sfixed64 = 0;
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<Numbers_Original>): Numbers {
     const message = { ...baseNumbers } as Numbers;
     if (object.double !== undefined && object.double !== null) {
       message.double = object.double;
@@ -2435,6 +3036,45 @@ export const SimpleButOptional = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<SimpleButOptional_Original>): SimpleButOptional {
+    const message = { ...baseSimpleButOptional } as SimpleButOptional;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = undefined;
+    }
+    if (object.age !== undefined && object.age !== null) {
+      message.age = object.age;
+    } else {
+      message.age = undefined;
+    }
+    if (object.createdAt !== undefined && object.createdAt !== null) {
+      message.createdAt = fromJsonTimestamp(object.createdAt);
+    } else {
+      message.createdAt = undefined;
+    }
+    if (object.child !== undefined && object.child !== null) {
+      message.child = Child.fromWrappedPartial(object.child);
+    } else {
+      message.child = undefined;
+    }
+    if (object.state !== undefined && object.state !== null) {
+      message.state = object.state;
+    } else {
+      message.state = undefined;
+    }
+    if (object.thing !== undefined && object.thing !== null) {
+      message.thing = ImportedThing.fromWrappedPartial(object.thing);
+    } else {
+      message.thing = undefined;
+    }
+    if (object.birthday !== undefined && object.birthday !== null) {
+      message.birthday = DateMessage.fromWrappedPartial(object.birthday);
+    } else {
+      message.birthday = undefined;
+    }
+    return message;
+  },
   toJSON(message: SimpleButOptional): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
@@ -2471,6 +3111,10 @@ export const Empty = {
     return message;
   },
   fromPartial(_: DeepPartial<Empty>): Empty {
+    const message = { ...baseEmpty } as Empty;
+    return message;
+  },
+  fromWrappedPartial(_: DeepPartial<Empty_Original>): Empty {
     const message = { ...baseEmpty } as Empty;
     return message;
   },

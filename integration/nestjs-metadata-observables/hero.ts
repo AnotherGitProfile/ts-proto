@@ -7,7 +7,15 @@ export interface HeroById {
   id: number;
 }
 
+export interface HeroById_Original {
+  id: number;
+}
+
 export interface VillainById {
+  id: number;
+}
+
+export interface VillainById_Original {
   id: number;
 }
 
@@ -16,7 +24,17 @@ export interface Hero {
   name: string;
 }
 
+export interface Hero_Original {
+  id: number;
+  name: string;
+}
+
 export interface Villain {
+  id: number;
+  name: string;
+}
+
+export interface Villain_Original {
   id: number;
   name: string;
 }

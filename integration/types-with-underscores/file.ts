@@ -5,7 +5,14 @@ export interface Baz {
   foo: FooBar | undefined;
 }
 
+export interface Baz_Original {
+  foo: FooBar_Original | undefined;
+}
+
 export interface FooBar {
+}
+
+export interface FooBar_Original {
 }
 
 const baseBaz: object = {
@@ -56,6 +63,15 @@ export const Baz = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<Baz_Original>): Baz {
+    const message = { ...baseBaz } as Baz;
+    if (object.foo !== undefined && object.foo !== null) {
+      message.foo = FooBar.fromWrappedPartial(object.foo);
+    } else {
+      message.foo = undefined;
+    }
+    return message;
+  },
   toJSON(message: Baz): unknown {
     const obj: any = {};
     message.foo !== undefined && (obj.foo = message.foo ? FooBar.toJSON(message.foo) : undefined);
@@ -86,6 +102,10 @@ export const FooBar = {
     return message;
   },
   fromPartial(_: DeepPartial<FooBar>): FooBar {
+    const message = { ...baseFooBar } as FooBar;
+    return message;
+  },
+  fromWrappedPartial(_: DeepPartial<FooBar_Original>): FooBar {
     const message = { ...baseFooBar } as FooBar;
     return message;
   },

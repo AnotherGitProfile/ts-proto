@@ -5,6 +5,10 @@ export interface Point {
   data: Buffer;
 }
 
+export interface Point_Original {
+  data: Buffer;
+}
+
 const basePoint: object = {
 };
 
@@ -38,6 +42,15 @@ export const Point = {
     return message;
   },
   fromPartial(object: DeepPartial<Point>): Point {
+    const message = { ...basePoint } as Point;
+    if (object.data !== undefined && object.data !== null) {
+      message.data = object.data;
+    } else {
+      message.data = new Buffer(0);
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<Point_Original>): Point {
     const message = { ...basePoint } as Point;
     if (object.data !== undefined && object.data !== null) {
       message.data = object.data;

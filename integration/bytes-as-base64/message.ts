@@ -3,6 +3,10 @@ export interface Message {
   data: Uint8Array;
 }
 
+export interface Message_Original {
+  data: Uint8Array;
+}
+
 const baseMessage: object = {
 };
 
@@ -15,6 +19,15 @@ export const Message = {
     return message;
   },
   fromPartial(object: DeepPartial<Message>): Message {
+    const message = { ...baseMessage } as Message;
+    if (object.data !== undefined && object.data !== null) {
+      message.data = object.data;
+    } else {
+      message.data = new Uint8Array();
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<Message_Original>): Message {
     const message = { ...baseMessage } as Message;
     if (object.data !== undefined && object.data !== null) {
       message.data = object.data;

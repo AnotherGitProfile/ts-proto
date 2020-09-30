@@ -94,4 +94,24 @@ describe('simple value types', () => {
     const s2 = PbSimpleWithWrappers.decode(PbSimpleWithWrappers.encode(s1).finish());
     expect(s2.coins.map((c) => c.value)).toEqual([1]);
   });
+
+  it('can build unwrapped values from wrapped', () => {
+    const s1 = {
+      name: { value: 'foo' },
+      snacks: [{ value: 'a' }, { value: 'b' }],
+    };
+    const s2 = SimpleWithWrappers.fromWrappedPartial(s1);
+    expect(s2).toMatchInlineSnapshot(`
+      Object {
+        "age": undefined,
+        "coins": Array [],
+        "enabled": undefined,
+        "name": "foo",
+        "snacks": Array [
+          "a",
+          "b",
+        ],
+      }
+    `);
+  });
 });

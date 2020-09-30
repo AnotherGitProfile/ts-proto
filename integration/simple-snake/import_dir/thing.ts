@@ -1,9 +1,13 @@
-import { Timestamp } from '../google/protobuf/timestamp';
+import { Timestamp_Original, Timestamp } from '../google/protobuf/timestamp';
 import { Writer, Reader } from 'protobufjs/minimal';
 
 
 export interface ImportedThing {
   created_at: Date | undefined;
+}
+
+export interface ImportedThing_Original {
+  created_at: Timestamp_Original | undefined;
 }
 
 const baseImportedThing: object = {
@@ -68,6 +72,15 @@ export const ImportedThing = {
     const message = { ...baseImportedThing } as ImportedThing;
     if (object.created_at !== undefined && object.created_at !== null) {
       message.created_at = object.created_at;
+    } else {
+      message.created_at = undefined;
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<ImportedThing_Original>): ImportedThing {
+    const message = { ...baseImportedThing } as ImportedThing;
+    if (object.created_at !== undefined && object.created_at !== null) {
+      message.created_at = fromJsonTimestamp(object.created_at);
     } else {
       message.created_at = undefined;
     }

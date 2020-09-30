@@ -1,4 +1,15 @@
-import { CodeBlock, FileSpec, FunctionSpec, InterfaceSpec, Member, Modifier, PropertySpec, TypeNames } from 'ts-poet';
+import {
+  CodeBlock,
+  FileSpec,
+  FunctionSpec,
+  InterfaceSpec,
+  Member,
+  Modifier,
+  PropertySpec,
+  TypeNames,
+  Union,
+  Any,
+} from 'ts-poet';
 import { google } from '../build/pbjs';
 import {
   basicLongWireType,
@@ -114,6 +125,7 @@ export function generateFile(typeMap: TypeMap, fileDesc: FileDescriptorProto, pa
     sourceInfo,
     (fullName, message, sInfo) => {
       file = file.addInterface(generateInterfaceDeclaration(typeMap, fullName, message, sInfo, options));
+      file = file.addInterface(generateInterfaceOriginalDeclaration(typeMap, fullName, message, sInfo, options));
     },
     options,
     (fullName, enumDesc, sInfo) => {
@@ -152,6 +164,7 @@ export function generateFile(typeMap: TypeMap, fileDesc: FileDescriptorProto, pa
           : staticMethods
               .addHashEntry(generateFromJson(typeMap, fullName, message, options))
               .addHashEntry(generateFromPartial(typeMap, fullName, message, options))
+              .addHashEntry(generateFromWrappedPartial(typeMap, fullName, message, options))
               .addHashEntry(generateToJson(typeMap, fullName, message, options));
 
         staticMethods = staticMethods.endHash().add(';').newLine();
@@ -490,6 +503,32 @@ function generateInterfaceDeclaration(
     let prop = PropertySpec.create(
       maybeSnakeToCamel(fieldDesc.name, options),
       toTypeName(typeMap, messageDesc, fieldDesc, options),
+      isOptionalProperty(fieldDesc, options)
+    );
+
+    const info = sourceInfo.lookup(Fields.message.field, index);
+    maybeAddComment(info, (text) => (prop = prop.addJavadoc(text)));
+
+    message = message.addProperty(prop);
+  });
+  return message;
+}
+
+// Create the interface with properties ignoring wrappers
+function generateInterfaceOriginalDeclaration(
+  typeMap: TypeMap,
+  fullName: string,
+  messageDesc: DescriptorProto,
+  sourceInfo: SourceInfo,
+  options: Options
+) {
+  let message = InterfaceSpec.create(`${fullName}_Original`).addModifiers(Modifier.EXPORT);
+  maybeAddComment(sourceInfo, (text) => (message = message.addJavadoc(text)));
+
+  messageDesc.field.forEach((fieldDesc, index) => {
+    let prop = PropertySpec.create(
+      maybeSnakeToCamel(fieldDesc.name, options),
+      toTypeName(typeMap, messageDesc, fieldDesc, options, true, true),
       isOptionalProperty(fieldDesc, options)
     );
 
@@ -1072,6 +1111,136 @@ function generateToJson(
     }
   });
   return func.addStatement('return obj');
+}
+
+function generateFromWrappedPartial(
+  typeMap: TypeMap,
+  fullName: string,
+  messageDesc: DescriptorProto,
+  options: Options
+): FunctionSpec {
+  // create the basic function declaration
+  let func = FunctionSpec.create('fromWrappedPartial')
+    .addParameter(messageDesc.field.length > 0 ? 'object' : '_', `DeepPartial<${fullName}_Original>`)
+    .returns(fullName);
+  // create the message
+  func = func.addStatement('const message = { ...base%L } as %L', fullName, fullName);
+
+  // initialize all lists
+  messageDesc.field.filter(isRepeated).forEach((field) => {
+    const value = isMapType(typeMap, messageDesc, field, options) ? '{}' : '[]';
+    func = func.addStatement('message.%L = %L', maybeSnakeToCamel(field.name, options), value);
+  });
+
+  // add a check for each incoming field
+  messageDesc.field.forEach((field) => {
+    const fieldName = maybeSnakeToCamel(field.name, options);
+
+    const readSnippet = (from: string): CodeBlock => {
+      if (isEnum(field) || isPrimitive(field)) {
+        return CodeBlock.of(from);
+      } else if (isTimestamp(field)) {
+        return CodeBlock.of(`fromJsonTimestamp(%L)`, from);
+      } else if (isValueType(field)) {
+        const baseTypeName = basicTypeName(typeMap, field, options);
+        if (baseTypeName instanceof Union) {
+          const cstr = capitalize(baseTypeName.typeChoices[0].toString());
+          return CodeBlock.of(`%L(%L.value)`, cstr, from);
+        }
+        if (baseTypeName instanceof Any) {
+          const cstr = capitalize(baseTypeName.usage);
+          return CodeBlock.of(`%L(%L.value)`, cstr, from);
+        }
+        return CodeBlock.of(`%L.value`, from);
+      } else if (isMessage(field)) {
+        if (isRepeated(field) && isMapType(typeMap, messageDesc, field, options)) {
+          const valueType = (typeMap.get(field.typeName)![2] as DescriptorProto).field[1];
+          if (isPrimitive(valueType)) {
+            if (isBytes(valueType)) {
+              return CodeBlock.of('%L', from);
+            } else if (isEnum(valueType)) {
+              return CodeBlock.of('%L as number', from);
+            } else {
+              const cstr = capitalize(basicTypeName(typeMap, valueType, options).toString());
+              return CodeBlock.of('%L(%L)', cstr, from);
+            }
+          } else if (isTimestamp(valueType)) {
+            return CodeBlock.of('%L', from);
+          } else {
+            return CodeBlock.of(
+              '%T.fromWrappedPartial(%L)',
+              basicTypeName(typeMap, valueType, options).toString(),
+              from
+            );
+          }
+        } else {
+          return CodeBlock.of('%T.fromWrappedPartial(%L)', basicTypeName(typeMap, field, options), from);
+        }
+      } else {
+        throw new Error(`Unhandled field ${field}`);
+      }
+    };
+
+    // and then use the snippet to handle repeated fields if necessary
+    if (isRepeated(field)) {
+      func = func.beginControlFlow('if (object.%L !== undefined && object.%L !== null)', fieldName, fieldName);
+      if (isMapType(typeMap, messageDesc, field, options)) {
+        func = func
+          .beginLambda('Object.entries(object.%L).forEach(([key, value]) =>', fieldName)
+          .beginControlFlow('if (value !== undefined)')
+          .addStatement(
+            `message.%L[%L] = %L`,
+            fieldName,
+            maybeCastToNumber(typeMap, messageDesc, field, 'key', options),
+            readSnippet('value')
+          )
+          .endControlFlow()
+          .endLambda(')');
+      } else {
+        func = func
+          .beginControlFlow('for (const e of object.%L)', fieldName)
+          .addStatement(`message.%L.push(%L)`, fieldName, readSnippet('e'))
+          .endControlFlow();
+      }
+    } else if (isWithinOneOfThatShouldBeUnion(options, field)) {
+      let oneofName = maybeSnakeToCamel(messageDesc.oneofDecl[field.oneofIndex].name, options);
+      func = func
+        .beginControlFlow(`if (object.%L !== undefined && object.%L !== null)`, fieldName, fieldName)
+        .addStatement(
+          `message.%L = {$case: '%L', %L: %L}`,
+          oneofName,
+          fieldName,
+          fieldName,
+          readSnippet(`object.${fieldName}`)
+        );
+    } else {
+      func = func.beginControlFlow('if (object.%L !== undefined && object.%L !== null)', fieldName, fieldName);
+      if (isLong(field) && options.forceLong === LongOption.LONG) {
+        func = func.addStatement(
+          `message.%L = %L as %L`,
+          fieldName,
+          readSnippet(`object.${fieldName}`),
+          basicTypeName(typeMap, field, options)
+        );
+      } else {
+        func = func.addStatement(`message.%L = %L`, fieldName, readSnippet(`object.${fieldName}`));
+      }
+    }
+
+    if (!isRepeated(field) && options.oneof !== OneofOption.UNIONS) {
+      func = func.nextControlFlow('else');
+      func = func.addStatement(
+        `message.%L = %L`,
+        fieldName,
+        isWithinOneOf(field) ? 'undefined' : defaultValue(typeMap, field, options)
+      );
+    }
+
+    func = func.endControlFlow();
+  });
+
+  // and then wrap up the switch/while/return
+  return func.addStatement('return message');
 }
 
 function generateFromPartial(

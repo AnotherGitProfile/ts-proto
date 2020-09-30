@@ -6,9 +6,19 @@ export interface Point {
   lng: number;
 }
 
+export interface Point_Original {
+  lat: number;
+  lng: number;
+}
+
 export interface Area {
   nw: Point | undefined;
   se: Point | undefined;
+}
+
+export interface Area_Original {
+  nw: Point_Original | undefined;
+  se: Point_Original | undefined;
 }
 
 const basePoint: object = {
@@ -60,6 +70,20 @@ export const Point = {
     return message;
   },
   fromPartial(object: DeepPartial<Point>): Point {
+    const message = { ...basePoint } as Point;
+    if (object.lat !== undefined && object.lat !== null) {
+      message.lat = object.lat;
+    } else {
+      message.lat = 0;
+    }
+    if (object.lng !== undefined && object.lng !== null) {
+      message.lng = object.lng;
+    } else {
+      message.lng = 0;
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<Point_Original>): Point {
     const message = { ...basePoint } as Point;
     if (object.lat !== undefined && object.lat !== null) {
       message.lat = object.lat;
@@ -134,6 +158,20 @@ export const Area = {
     }
     if (object.se !== undefined && object.se !== null) {
       message.se = Point.fromPartial(object.se);
+    } else {
+      message.se = undefined;
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<Area_Original>): Area {
+    const message = { ...baseArea } as Area;
+    if (object.nw !== undefined && object.nw !== null) {
+      message.nw = Point.fromWrappedPartial(object.nw);
+    } else {
+      message.nw = undefined;
+    }
+    if (object.se !== undefined && object.se !== null) {
+      message.se = Point.fromWrappedPartial(object.se);
     } else {
       message.se = undefined;
     }

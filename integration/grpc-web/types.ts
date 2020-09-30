@@ -18,7 +18,27 @@ export interface Timestamp {
   nanos: number;
 }
 
+export interface Timestamp_Original {
+  /**
+   *  Represents seconds of UTC time since Unix epoch
+   *  1970-01-01T00:00:00Z. Must be from from 0001-01-01T00:00:00Z to
+   *  9999-12-31T23:59:59Z inclusive.
+   */
+  seconds: number;
+  /**
+   *  Non-negative fractions of a second at nanosecond resolution. Negative
+   *  second values with fractions must still have non-negative nanos values
+   *  that count forward in time. Must be from 0 to 999,999,999
+   *  inclusive.
+   */
+  nanos: number;
+}
+
 export interface Duration {
+  nanos: number;
+}
+
+export interface Duration_Original {
   nanos: number;
 }
 
@@ -27,6 +47,13 @@ export interface Duration {
  *  return no data.
  */
 export interface Empty {
+}
+
+/**
+ *  Empty is only used as a message for rpc calls that
+ *  return no data.
+ */
+export interface Empty_Original {
 }
 
 /**
@@ -41,11 +68,31 @@ export interface OptString {
   val: string;
 }
 
+/**
+ *  An optional string value used for RPCs that update a record.
+ *  If the Optional is undefined, the updating code will not change
+ *  the field.
+ */
+export interface OptString_Original {
+  /**
+   * should be private, but conflicts with field tags
+   */
+  val: string;
+}
+
 export interface OptInt64 {
   val: number;
 }
 
+export interface OptInt64_Original {
+  val: number;
+}
+
 export interface OptBool {
+  val: boolean;
+}
+
+export interface OptBool_Original {
   val: boolean;
 }
 
@@ -54,7 +101,16 @@ export interface IPNet {
   mask: Uint8Array;
 }
 
+export interface IPNet_Original {
+  ip: Uint8Array;
+  mask: Uint8Array;
+}
+
 export interface ID {
+  id: string;
+}
+
+export interface ID_Original {
   id: string;
 }
 
@@ -150,6 +206,20 @@ export const Timestamp = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<Timestamp_Original>): Timestamp {
+    const message = { ...baseTimestamp } as Timestamp;
+    if (object.seconds !== undefined && object.seconds !== null) {
+      message.seconds = object.seconds;
+    } else {
+      message.seconds = 0;
+    }
+    if (object.nanos !== undefined && object.nanos !== null) {
+      message.nanos = object.nanos;
+    } else {
+      message.nanos = 0;
+    }
+    return message;
+  },
   toJSON(message: Timestamp): unknown {
     const obj: any = {};
     message.seconds !== undefined && (obj.seconds = message.seconds);
@@ -198,6 +268,15 @@ export const Duration = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<Duration_Original>): Duration {
+    const message = { ...baseDuration } as Duration;
+    if (object.nanos !== undefined && object.nanos !== null) {
+      message.nanos = object.nanos;
+    } else {
+      message.nanos = 0;
+    }
+    return message;
+  },
   toJSON(message: Duration): unknown {
     const obj: any = {};
     message.nanos !== undefined && (obj.nanos = message.nanos);
@@ -228,6 +307,10 @@ export const Empty = {
     return message;
   },
   fromPartial(_: DeepPartial<Empty>): Empty {
+    const message = { ...baseEmpty } as Empty;
+    return message;
+  },
+  fromWrappedPartial(_: DeepPartial<Empty_Original>): Empty {
     const message = { ...baseEmpty } as Empty;
     return message;
   },
@@ -269,6 +352,15 @@ export const OptString = {
     return message;
   },
   fromPartial(object: DeepPartial<OptString>): OptString {
+    const message = { ...baseOptString } as OptString;
+    if (object.val !== undefined && object.val !== null) {
+      message.val = object.val;
+    } else {
+      message.val = "";
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<OptString_Original>): OptString {
     const message = { ...baseOptString } as OptString;
     if (object.val !== undefined && object.val !== null) {
       message.val = object.val;
@@ -324,6 +416,15 @@ export const OptInt64 = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<OptInt64_Original>): OptInt64 {
+    const message = { ...baseOptInt64 } as OptInt64;
+    if (object.val !== undefined && object.val !== null) {
+      message.val = object.val;
+    } else {
+      message.val = 0;
+    }
+    return message;
+  },
   toJSON(message: OptInt64): unknown {
     const obj: any = {};
     message.val !== undefined && (obj.val = message.val);
@@ -363,6 +464,15 @@ export const OptBool = {
     return message;
   },
   fromPartial(object: DeepPartial<OptBool>): OptBool {
+    const message = { ...baseOptBool } as OptBool;
+    if (object.val !== undefined && object.val !== null) {
+      message.val = object.val;
+    } else {
+      message.val = false;
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<OptBool_Original>): OptBool {
     const message = { ...baseOptBool } as OptBool;
     if (object.val !== undefined && object.val !== null) {
       message.val = object.val;
@@ -428,6 +538,20 @@ export const IPNet = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<IPNet_Original>): IPNet {
+    const message = { ...baseIPNet } as IPNet;
+    if (object.ip !== undefined && object.ip !== null) {
+      message.ip = object.ip;
+    } else {
+      message.ip = new Uint8Array();
+    }
+    if (object.mask !== undefined && object.mask !== null) {
+      message.mask = object.mask;
+    } else {
+      message.mask = new Uint8Array();
+    }
+    return message;
+  },
   toJSON(message: IPNet): unknown {
     const obj: any = {};
     message.ip !== undefined && (obj.ip = base64FromBytes(message.ip !== undefined ? message.ip : new Uint8Array()));
@@ -468,6 +592,15 @@ export const ID = {
     return message;
   },
   fromPartial(object: DeepPartial<ID>): ID {
+    const message = { ...baseID } as ID;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = "";
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<ID_Original>): ID {
     const message = { ...baseID } as ID;
     if (object.id !== undefined && object.id !== null) {
       message.id = object.id;

@@ -8,6 +8,11 @@ export interface User {
   name: string;
 }
 
+export interface User_Original {
+  id: number;
+  name: string;
+}
+
 export interface HeroServiceClient {
 
   findCurrentUser(request: Empty, ...rest: any): Observable<User>;

@@ -7,15 +7,31 @@ export interface BatchQueryRequest {
   ids: string[];
 }
 
+export interface BatchQueryRequest_Original {
+  ids: string[];
+}
+
 export interface BatchQueryResponse {
   entities: Entity[];
+}
+
+export interface BatchQueryResponse_Original {
+  entities: Entity_Original[];
 }
 
 export interface BatchMapQueryRequest {
   ids: string[];
 }
 
+export interface BatchMapQueryRequest_Original {
+  ids: string[];
+}
+
 export interface BatchMapQueryResponse {
+  entities: { [key: string]: Entity };
+}
+
+export interface BatchMapQueryResponse_Original {
   entities: { [key: string]: Entity };
 }
 
@@ -24,7 +40,16 @@ export interface BatchMapQueryResponse_EntitiesEntry {
   value: Entity | undefined;
 }
 
+export interface BatchMapQueryResponse_EntitiesEntry_Original {
+  key: string;
+  value: Entity_Original | undefined;
+}
+
 export interface GetOnlyMethodRequest {
+  id: string;
+}
+
+export interface GetOnlyMethodRequest_Original {
   id: string;
 }
 
@@ -32,14 +57,30 @@ export interface GetOnlyMethodResponse {
   entity: Entity | undefined;
 }
 
+export interface GetOnlyMethodResponse_Original {
+  entity: Entity_Original | undefined;
+}
+
 export interface WriteMethodRequest {
+  id: string;
+}
+
+export interface WriteMethodRequest_Original {
   id: string;
 }
 
 export interface WriteMethodResponse {
 }
 
+export interface WriteMethodResponse_Original {
+}
+
 export interface Entity {
+  id: string;
+  name: string;
+}
+
+export interface Entity_Original {
   id: string;
   name: string;
 }
@@ -224,6 +265,16 @@ export const BatchQueryRequest = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<BatchQueryRequest_Original>): BatchQueryRequest {
+    const message = { ...baseBatchQueryRequest } as BatchQueryRequest;
+    message.ids = [];
+    if (object.ids !== undefined && object.ids !== null) {
+      for (const e of object.ids) {
+        message.ids.push(e);
+      }
+    }
+    return message;
+  },
   toJSON(message: BatchQueryRequest): unknown {
     const obj: any = {};
     if (message.ids) {
@@ -280,6 +331,16 @@ export const BatchQueryResponse = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<BatchQueryResponse_Original>): BatchQueryResponse {
+    const message = { ...baseBatchQueryResponse } as BatchQueryResponse;
+    message.entities = [];
+    if (object.entities !== undefined && object.entities !== null) {
+      for (const e of object.entities) {
+        message.entities.push(Entity.fromWrappedPartial(e));
+      }
+    }
+    return message;
+  },
   toJSON(message: BatchQueryResponse): unknown {
     const obj: any = {};
     if (message.entities) {
@@ -327,6 +388,16 @@ export const BatchMapQueryRequest = {
     return message;
   },
   fromPartial(object: DeepPartial<BatchMapQueryRequest>): BatchMapQueryRequest {
+    const message = { ...baseBatchMapQueryRequest } as BatchMapQueryRequest;
+    message.ids = [];
+    if (object.ids !== undefined && object.ids !== null) {
+      for (const e of object.ids) {
+        message.ids.push(e);
+      }
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<BatchMapQueryRequest_Original>): BatchMapQueryRequest {
     const message = { ...baseBatchMapQueryRequest } as BatchMapQueryRequest;
     message.ids = [];
     if (object.ids !== undefined && object.ids !== null) {
@@ -392,6 +463,18 @@ export const BatchMapQueryResponse = {
       Object.entries(object.entities).forEach(([key, value]) => {
         if (value !== undefined) {
           message.entities[key] = Entity.fromPartial(value);
+        }
+      })
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<BatchMapQueryResponse_Original>): BatchMapQueryResponse {
+    const message = { ...baseBatchMapQueryResponse } as BatchMapQueryResponse;
+    message.entities = {};
+    if (object.entities !== undefined && object.entities !== null) {
+      Object.entries(object.entities).forEach(([key, value]) => {
+        if (value !== undefined) {
+          message.entities[key] = Entity.fromWrappedPartial(value);
         }
       })
     }
@@ -465,6 +548,20 @@ export const BatchMapQueryResponse_EntitiesEntry = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<BatchMapQueryResponse_EntitiesEntry_Original>): BatchMapQueryResponse_EntitiesEntry {
+    const message = { ...baseBatchMapQueryResponse_EntitiesEntry } as BatchMapQueryResponse_EntitiesEntry;
+    if (object.key !== undefined && object.key !== null) {
+      message.key = object.key;
+    } else {
+      message.key = "";
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = Entity.fromWrappedPartial(object.value);
+    } else {
+      message.value = undefined;
+    }
+    return message;
+  },
   toJSON(message: BatchMapQueryResponse_EntitiesEntry): unknown {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
@@ -505,6 +602,15 @@ export const GetOnlyMethodRequest = {
     return message;
   },
   fromPartial(object: DeepPartial<GetOnlyMethodRequest>): GetOnlyMethodRequest {
+    const message = { ...baseGetOnlyMethodRequest } as GetOnlyMethodRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = "";
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<GetOnlyMethodRequest_Original>): GetOnlyMethodRequest {
     const message = { ...baseGetOnlyMethodRequest } as GetOnlyMethodRequest;
     if (object.id !== undefined && object.id !== null) {
       message.id = object.id;
@@ -562,6 +668,15 @@ export const GetOnlyMethodResponse = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<GetOnlyMethodResponse_Original>): GetOnlyMethodResponse {
+    const message = { ...baseGetOnlyMethodResponse } as GetOnlyMethodResponse;
+    if (object.entity !== undefined && object.entity !== null) {
+      message.entity = Entity.fromWrappedPartial(object.entity);
+    } else {
+      message.entity = undefined;
+    }
+    return message;
+  },
   toJSON(message: GetOnlyMethodResponse): unknown {
     const obj: any = {};
     message.entity !== undefined && (obj.entity = message.entity ? Entity.toJSON(message.entity) : undefined);
@@ -609,6 +724,15 @@ export const WriteMethodRequest = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<WriteMethodRequest_Original>): WriteMethodRequest {
+    const message = { ...baseWriteMethodRequest } as WriteMethodRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = "";
+    }
+    return message;
+  },
   toJSON(message: WriteMethodRequest): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
@@ -639,6 +763,10 @@ export const WriteMethodResponse = {
     return message;
   },
   fromPartial(_: DeepPartial<WriteMethodResponse>): WriteMethodResponse {
+    const message = { ...baseWriteMethodResponse } as WriteMethodResponse;
+    return message;
+  },
+  fromWrappedPartial(_: DeepPartial<WriteMethodResponse_Original>): WriteMethodResponse {
     const message = { ...baseWriteMethodResponse } as WriteMethodResponse;
     return message;
   },
@@ -689,6 +817,20 @@ export const Entity = {
     return message;
   },
   fromPartial(object: DeepPartial<Entity>): Entity {
+    const message = { ...baseEntity } as Entity;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = "";
+    }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<Entity_Original>): Entity {
     const message = { ...baseEntity } as Entity;
     if (object.id !== undefined && object.id !== null) {
       message.id = object.id;

@@ -1,4 +1,4 @@
-import { ID, Empty } from './types';
+import { ID, ID_Original, Empty } from './types';
 import { BrowserHeaders } from 'browser-headers';
 import { grpc } from '@improbable-eng/grpc-web';
 import { Writer, Reader } from 'protobufjs/minimal';
@@ -9,13 +9,29 @@ export interface DashFlash {
   type: DashFlash_Type;
 }
 
+export interface DashFlash_Original {
+  msg: string;
+  type: DashFlash_Type;
+}
+
 export interface DashUserSettingsState {
   email: string;
   urls: DashUserSettingsState_URLs | undefined;
   flashes: DashFlash[];
 }
 
+export interface DashUserSettingsState_Original {
+  email: string;
+  urls: DashUserSettingsState_URLs_Original | undefined;
+  flashes: DashFlash_Original[];
+}
+
 export interface DashUserSettingsState_URLs {
+  connectGoogle: string;
+  connectGithub: string;
+}
+
+export interface DashUserSettingsState_URLs_Original {
   connectGoogle: string;
   connectGithub: string;
 }
@@ -27,7 +43,19 @@ export interface DashCred {
   id: ID | undefined;
 }
 
+export interface DashCred_Original {
+  description: string;
+  metadata: string;
+  token: string;
+  id: ID_Original | undefined;
+}
+
 export interface DashAPICredsCreateReq {
+  description: string;
+  metadata: string;
+}
+
+export interface DashAPICredsCreateReq_Original {
   description: string;
   metadata: string;
 }
@@ -39,9 +67,21 @@ export interface DashAPICredsUpdateReq {
   id: ID | undefined;
 }
 
+export interface DashAPICredsUpdateReq_Original {
+  credSid: string;
+  description: string;
+  metadata: string;
+  id: ID_Original | undefined;
+}
+
 export interface DashAPICredsDeleteReq {
   credSid: string;
   id: ID | undefined;
+}
+
+export interface DashAPICredsDeleteReq_Original {
+  credSid: string;
+  id: ID_Original | undefined;
 }
 
 const baseDashFlash: object = {
@@ -280,6 +320,20 @@ export const DashFlash = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<DashFlash_Original>): DashFlash {
+    const message = { ...baseDashFlash } as DashFlash;
+    if (object.msg !== undefined && object.msg !== null) {
+      message.msg = object.msg;
+    } else {
+      message.msg = "";
+    }
+    if (object.type !== undefined && object.type !== null) {
+      message.type = object.type;
+    } else {
+      message.type = 0;
+    }
+    return message;
+  },
   toJSON(message: DashFlash): unknown {
     const obj: any = {};
     message.msg !== undefined && (obj.msg = message.msg);
@@ -363,6 +417,26 @@ export const DashUserSettingsState = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<DashUserSettingsState_Original>): DashUserSettingsState {
+    const message = { ...baseDashUserSettingsState } as DashUserSettingsState;
+    message.flashes = [];
+    if (object.email !== undefined && object.email !== null) {
+      message.email = object.email;
+    } else {
+      message.email = "";
+    }
+    if (object.urls !== undefined && object.urls !== null) {
+      message.urls = DashUserSettingsState_URLs.fromWrappedPartial(object.urls);
+    } else {
+      message.urls = undefined;
+    }
+    if (object.flashes !== undefined && object.flashes !== null) {
+      for (const e of object.flashes) {
+        message.flashes.push(DashFlash.fromWrappedPartial(e));
+      }
+    }
+    return message;
+  },
   toJSON(message: DashUserSettingsState): unknown {
     const obj: any = {};
     message.email !== undefined && (obj.email = message.email);
@@ -417,6 +491,20 @@ export const DashUserSettingsState_URLs = {
     return message;
   },
   fromPartial(object: DeepPartial<DashUserSettingsState_URLs>): DashUserSettingsState_URLs {
+    const message = { ...baseDashUserSettingsState_URLs } as DashUserSettingsState_URLs;
+    if (object.connectGoogle !== undefined && object.connectGoogle !== null) {
+      message.connectGoogle = object.connectGoogle;
+    } else {
+      message.connectGoogle = "";
+    }
+    if (object.connectGithub !== undefined && object.connectGithub !== null) {
+      message.connectGithub = object.connectGithub;
+    } else {
+      message.connectGithub = "";
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<DashUserSettingsState_URLs_Original>): DashUserSettingsState_URLs {
     const message = { ...baseDashUserSettingsState_URLs } as DashUserSettingsState_URLs;
     if (object.connectGoogle !== undefined && object.connectGoogle !== null) {
       message.connectGoogle = object.connectGoogle;
@@ -522,6 +610,30 @@ export const DashCred = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<DashCred_Original>): DashCred {
+    const message = { ...baseDashCred } as DashCred;
+    if (object.description !== undefined && object.description !== null) {
+      message.description = object.description;
+    } else {
+      message.description = "";
+    }
+    if (object.metadata !== undefined && object.metadata !== null) {
+      message.metadata = object.metadata;
+    } else {
+      message.metadata = "";
+    }
+    if (object.token !== undefined && object.token !== null) {
+      message.token = object.token;
+    } else {
+      message.token = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = ID.fromWrappedPartial(object.id);
+    } else {
+      message.id = undefined;
+    }
+    return message;
+  },
   toJSON(message: DashCred): unknown {
     const obj: any = {};
     message.description !== undefined && (obj.description = message.description);
@@ -573,6 +685,20 @@ export const DashAPICredsCreateReq = {
     return message;
   },
   fromPartial(object: DeepPartial<DashAPICredsCreateReq>): DashAPICredsCreateReq {
+    const message = { ...baseDashAPICredsCreateReq } as DashAPICredsCreateReq;
+    if (object.description !== undefined && object.description !== null) {
+      message.description = object.description;
+    } else {
+      message.description = "";
+    }
+    if (object.metadata !== undefined && object.metadata !== null) {
+      message.metadata = object.metadata;
+    } else {
+      message.metadata = "";
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<DashAPICredsCreateReq_Original>): DashAPICredsCreateReq {
     const message = { ...baseDashAPICredsCreateReq } as DashAPICredsCreateReq;
     if (object.description !== undefined && object.description !== null) {
       message.description = object.description;
@@ -678,6 +804,30 @@ export const DashAPICredsUpdateReq = {
     }
     return message;
   },
+  fromWrappedPartial(object: DeepPartial<DashAPICredsUpdateReq_Original>): DashAPICredsUpdateReq {
+    const message = { ...baseDashAPICredsUpdateReq } as DashAPICredsUpdateReq;
+    if (object.credSid !== undefined && object.credSid !== null) {
+      message.credSid = object.credSid;
+    } else {
+      message.credSid = "";
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = object.description;
+    } else {
+      message.description = "";
+    }
+    if (object.metadata !== undefined && object.metadata !== null) {
+      message.metadata = object.metadata;
+    } else {
+      message.metadata = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = ID.fromWrappedPartial(object.id);
+    } else {
+      message.id = undefined;
+    }
+    return message;
+  },
   toJSON(message: DashAPICredsUpdateReq): unknown {
     const obj: any = {};
     message.credSid !== undefined && (obj.credSid = message.credSid);
@@ -739,6 +889,20 @@ export const DashAPICredsDeleteReq = {
     }
     if (object.id !== undefined && object.id !== null) {
       message.id = ID.fromPartial(object.id);
+    } else {
+      message.id = undefined;
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<DashAPICredsDeleteReq_Original>): DashAPICredsDeleteReq {
+    const message = { ...baseDashAPICredsDeleteReq } as DashAPICredsDeleteReq;
+    if (object.credSid !== undefined && object.credSid !== null) {
+      message.credSid = object.credSid;
+    } else {
+      message.credSid = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = ID.fromWrappedPartial(object.id);
     } else {
       message.id = undefined;
     }

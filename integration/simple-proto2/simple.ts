@@ -5,6 +5,10 @@ export interface Issue56 {
   test: EnumWithoutZero;
 }
 
+export interface Issue56_Original {
+  test: EnumWithoutZero;
+}
+
 const baseIssue56: object = {
   test: 1,
 };
@@ -73,6 +77,15 @@ export const Issue56 = {
     return message;
   },
   fromPartial(object: DeepPartial<Issue56>): Issue56 {
+    const message = { ...baseIssue56 } as Issue56;
+    if (object.test !== undefined && object.test !== null) {
+      message.test = object.test;
+    } else {
+      message.test = 1;
+    }
+    return message;
+  },
+  fromWrappedPartial(object: DeepPartial<Issue56_Original>): Issue56 {
     const message = { ...baseIssue56 } as Issue56;
     if (object.test !== undefined && object.test !== null) {
       message.test = object.test;
