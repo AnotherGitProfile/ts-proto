@@ -959,7 +959,7 @@ export const Simple = {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     message.age !== undefined && (obj.age = message.age);
-    message.createdAt !== undefined && (obj.createdAt = message.createdAt !== undefined ? toTimestamp(message.createdAt) : null);
+    message.createdAt !== undefined && (obj.createdAt = message.createdAt !== undefined && message.createdAt !== null ? toTimestamp(message.createdAt) : null);
     message.child !== undefined && (obj.child = message.child ? Child.toWrapped(message.child) : undefined);
     message.state !== undefined && (obj.state = stateEnumFromJSON(message.state));
     if (message.grandChildren) {
@@ -2270,7 +2270,7 @@ export const SimpleWithMap_MapOfTimestampsEntry = {
   toWrapped(message: SimpleWithMap_MapOfTimestampsEntry): SimpleWithMap_MapOfTimestampsEntry_Original {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value !== undefined ? toTimestamp(message.value) : null);
+    message.value !== undefined && (obj.value = message.value !== undefined && message.value !== null ? toTimestamp(message.value) : null);
     return obj;
   },
   toJSON(message: SimpleWithMap_MapOfTimestampsEntry): unknown {
@@ -3290,9 +3290,9 @@ export const SimpleButOptional = {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     message.age !== undefined && (obj.age = message.age);
-    message.createdAt !== undefined && (obj.createdAt = message.createdAt !== undefined ? toTimestamp(message.createdAt) : null);
+    message.createdAt !== undefined && (obj.createdAt = message.createdAt !== undefined && message.createdAt !== null ? toTimestamp(message.createdAt) : null);
     message.child !== undefined && (obj.child = message.child ? Child.toWrapped(message.child) : undefined);
-    message.state !== undefined && (obj.state = message.state !== undefined ? stateEnumFromJSON(message.state) : undefined);
+    message.state !== undefined && (obj.state = message.state !== undefined && message.state !== null ? stateEnumFromJSON(message.state) : undefined);
     message.thing !== undefined && (obj.thing = message.thing ? ImportedThing.toWrapped(message.thing) : undefined);
     message.birthday !== undefined && (obj.birthday = message.birthday ? DateMessage.toWrapped(message.birthday) : undefined);
     return obj;

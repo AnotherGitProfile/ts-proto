@@ -312,7 +312,7 @@ describe('simple', () => {
   });
 
   it('toWrapped', () => {
-    const message: Simple = {
+    const message = ({
       name: 'Asdf',
       age: 1,
       createdAt: jan1,
@@ -332,13 +332,14 @@ describe('simple', () => {
       oldStates: [StateEnum.OFF, StateEnum.UNKNOWN],
       thing: undefined,
       blobs: [],
-      birthday: undefined,
+      birthday: null,
       blob: new Uint8Array(),
-    };
+    } as unknown) as Simple;
     const s2 = Simple.toWrapped(message);
     expect(s2).toMatchInlineSnapshot(`
       Object {
         "age": 1,
+        "birthday": undefined,
         "blob": "",
         "blobs": Array [],
         "child": Object {

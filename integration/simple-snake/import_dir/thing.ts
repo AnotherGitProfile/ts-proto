@@ -88,7 +88,7 @@ export const ImportedThing = {
   },
   toWrapped(message: ImportedThing): ImportedThing_Original {
     const obj: any = {};
-    message.created_at !== undefined && (obj.created_at = message.created_at !== undefined ? toTimestamp(message.created_at) : null);
+    message.created_at !== undefined && (obj.created_at = message.created_at !== undefined && message.created_at !== null ? toTimestamp(message.created_at) : null);
     return obj;
   },
   toJSON(message: ImportedThing): unknown {

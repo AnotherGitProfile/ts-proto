@@ -1133,10 +1133,10 @@ function generateToWrapped(
       if (isEnum(field)) {
         const fromJson = getEnumMethod(typeMap, field.typeName, 'FromJSON');
         return isWithinOneOf(field)
-          ? CodeBlock.of('%L !== undefined ? %T(%L) : undefined', from, fromJson, from)
+          ? CodeBlock.of('%L !== undefined && %L !== null ? %T(%L) : undefined', from, from, fromJson, from)
           : CodeBlock.of('%T(%L)', fromJson, from);
       } else if (isTimestamp(field)) {
-        return CodeBlock.of('%L !== undefined ? toTimestamp(%L) : null', from, from);
+        return CodeBlock.of('%L !== undefined && %L !== null ? toTimestamp(%L) : null', from, from, from);
       } else if (isMapType(typeMap, messageDesc, field, options)) {
         // For map types, drill-in and then admittedly re-hard-code our per-value-type logic
         const valueType = (typeMap.get(field.typeName)![2] as DescriptorProto).field[1];
