@@ -195,6 +195,15 @@ export const Tile = {
     }
     return message;
   },
+  toWrapped(message: Tile): Tile_Original {
+    const obj: any = {};
+    if (message.layers) {
+      obj.layers = message.layers.map(e => e ? Tile_Layer.toWrapped(e) : undefined);
+    } else {
+      obj.layers = [];
+    }
+    return obj;
+  },
   toJSON(message: Tile): unknown {
     const obj: any = {};
     if (message.layers) {
@@ -369,6 +378,17 @@ export const Tile_Value = {
     }
     return message;
   },
+  toWrapped(message: Tile_Value): Tile_Value_Original {
+    const obj: any = {};
+    message.stringValue !== undefined && (obj.stringValue = message.stringValue);
+    message.floatValue !== undefined && (obj.floatValue = message.floatValue);
+    message.doubleValue !== undefined && (obj.doubleValue = message.doubleValue);
+    message.intValue !== undefined && (obj.intValue = message.intValue);
+    message.uintValue !== undefined && (obj.uintValue = message.uintValue);
+    message.sintValue !== undefined && (obj.sintValue = message.sintValue);
+    message.boolValue !== undefined && (obj.boolValue = message.boolValue);
+    return obj;
+  },
   toJSON(message: Tile_Value): unknown {
     const obj: any = {};
     message.stringValue !== undefined && (obj.stringValue = message.stringValue);
@@ -517,6 +537,22 @@ export const Tile_Feature = {
       }
     }
     return message;
+  },
+  toWrapped(message: Tile_Feature): Tile_Feature_Original {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    if (message.tags) {
+      obj.tags = message.tags.map(e => e);
+    } else {
+      obj.tags = [];
+    }
+    message.type !== undefined && (obj.type = tile_GeomTypeToJSON(message.type));
+    if (message.geometry) {
+      obj.geometry = message.geometry.map(e => e);
+    } else {
+      obj.geometry = [];
+    }
+    return obj;
   },
   toJSON(message: Tile_Feature): unknown {
     const obj: any = {};
@@ -697,6 +733,28 @@ export const Tile_Layer = {
       message.extent = 0;
     }
     return message;
+  },
+  toWrapped(message: Tile_Layer): Tile_Layer_Original {
+    const obj: any = {};
+    message.version !== undefined && (obj.version = message.version);
+    message.name !== undefined && (obj.name = message.name);
+    if (message.features) {
+      obj.features = message.features.map(e => e ? Tile_Feature.toWrapped(e) : undefined);
+    } else {
+      obj.features = [];
+    }
+    if (message.keys) {
+      obj.keys = message.keys.map(e => e);
+    } else {
+      obj.keys = [];
+    }
+    if (message.values) {
+      obj.values = message.values.map(e => e ? Tile_Value.toWrapped(e) : undefined);
+    } else {
+      obj.values = [];
+    }
+    message.extent !== undefined && (obj.extent = message.extent);
+    return obj;
   },
   toJSON(message: Tile_Layer): unknown {
     const obj: any = {};

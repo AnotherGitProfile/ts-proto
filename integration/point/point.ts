@@ -97,6 +97,12 @@ export const Point = {
     }
     return message;
   },
+  toWrapped(message: Point): Point_Original {
+    const obj: any = {};
+    message.lat !== undefined && (obj.lat = message.lat);
+    message.lng !== undefined && (obj.lng = message.lng);
+    return obj;
+  },
   toJSON(message: Point): unknown {
     const obj: any = {};
     message.lat !== undefined && (obj.lat = message.lat);
@@ -176,6 +182,12 @@ export const Area = {
       message.se = undefined;
     }
     return message;
+  },
+  toWrapped(message: Area): Area_Original {
+    const obj: any = {};
+    message.nw !== undefined && (obj.nw = message.nw ? Point.toWrapped(message.nw) : undefined);
+    message.se !== undefined && (obj.se = message.se ? Point.toWrapped(message.se) : undefined);
+    return obj;
   },
   toJSON(message: Area): unknown {
     const obj: any = {};

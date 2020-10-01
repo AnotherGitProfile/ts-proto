@@ -233,6 +233,15 @@ export const BatchQueryRequest = {
     }
     return message;
   },
+  toWrapped(message: BatchQueryRequest): BatchQueryRequest_Original {
+    const obj: any = {};
+    if (message.ids) {
+      obj.ids = message.ids.map(e => e);
+    } else {
+      obj.ids = [];
+    }
+    return obj;
+  },
   toJSON(message: BatchQueryRequest): unknown {
     const obj: any = {};
     if (message.ids) {
@@ -299,6 +308,15 @@ export const BatchQueryResponse = {
     }
     return message;
   },
+  toWrapped(message: BatchQueryResponse): BatchQueryResponse_Original {
+    const obj: any = {};
+    if (message.entities) {
+      obj.entities = message.entities.map(e => e ? Entity.toWrapped(e) : undefined);
+    } else {
+      obj.entities = [];
+    }
+    return obj;
+  },
   toJSON(message: BatchQueryResponse): unknown {
     const obj: any = {};
     if (message.entities) {
@@ -364,6 +382,15 @@ export const BatchMapQueryRequest = {
       }
     }
     return message;
+  },
+  toWrapped(message: BatchMapQueryRequest): BatchMapQueryRequest_Original {
+    const obj: any = {};
+    if (message.ids) {
+      obj.ids = message.ids.map(e => e);
+    } else {
+      obj.ids = [];
+    }
+    return obj;
   },
   toJSON(message: BatchMapQueryRequest): unknown {
     const obj: any = {};
@@ -437,6 +464,16 @@ export const BatchMapQueryResponse = {
       })
     }
     return message;
+  },
+  toWrapped(message: BatchMapQueryResponse): BatchMapQueryResponse_Original {
+    const obj: any = {};
+    obj.entities = {};
+    if (message.entities) {
+      Object.entries(message.entities).forEach(([k, v]) => {
+        obj.entities[k] = Entity.toWrapped(v);
+      })
+    }
+    return obj;
   },
   toJSON(message: BatchMapQueryResponse): unknown {
     const obj: any = {};
@@ -520,6 +557,12 @@ export const BatchMapQueryResponse_EntitiesEntry = {
     }
     return message;
   },
+  toWrapped(message: BatchMapQueryResponse_EntitiesEntry): BatchMapQueryResponse_EntitiesEntry_Original {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value ? Entity.toWrapped(message.value) : undefined);
+    return obj;
+  },
   toJSON(message: BatchMapQueryResponse_EntitiesEntry): unknown {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
@@ -576,6 +619,11 @@ export const GetOnlyMethodRequest = {
       message.id = "";
     }
     return message;
+  },
+  toWrapped(message: GetOnlyMethodRequest): GetOnlyMethodRequest_Original {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
   },
   toJSON(message: GetOnlyMethodRequest): unknown {
     const obj: any = {};
@@ -635,6 +683,11 @@ export const GetOnlyMethodResponse = {
     }
     return message;
   },
+  toWrapped(message: GetOnlyMethodResponse): GetOnlyMethodResponse_Original {
+    const obj: any = {};
+    message.entity !== undefined && (obj.entity = message.entity ? Entity.toWrapped(message.entity) : undefined);
+    return obj;
+  },
   toJSON(message: GetOnlyMethodResponse): unknown {
     const obj: any = {};
     message.entity !== undefined && (obj.entity = message.entity ? Entity.toJSON(message.entity) : undefined);
@@ -691,6 +744,11 @@ export const WriteMethodRequest = {
     }
     return message;
   },
+  toWrapped(message: WriteMethodRequest): WriteMethodRequest_Original {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
   toJSON(message: WriteMethodRequest): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
@@ -727,6 +785,10 @@ export const WriteMethodResponse = {
   fromWrappedPartial(_: DeepPartial<WriteMethodResponse_Original>): WriteMethodResponse {
     const message = { ...baseWriteMethodResponse } as WriteMethodResponse;
     return message;
+  },
+  toWrapped(_: WriteMethodResponse): WriteMethodResponse_Original {
+    const obj: any = {};
+    return obj;
   },
   toJSON(_: WriteMethodResponse): unknown {
     const obj: any = {};
@@ -801,6 +863,12 @@ export const Entity = {
       message.name = "";
     }
     return message;
+  },
+  toWrapped(message: Entity): Entity_Original {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.name !== undefined && (obj.name = message.name);
+    return obj;
   },
   toJSON(message: Entity): unknown {
     const obj: any = {};

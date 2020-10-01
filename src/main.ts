@@ -165,6 +165,7 @@ export function generateFile(typeMap: TypeMap, fileDesc: FileDescriptorProto, pa
               .addHashEntry(generateFromJson(typeMap, fullName, message, options))
               .addHashEntry(generateFromPartial(typeMap, fullName, message, options))
               .addHashEntry(generateFromWrappedPartial(typeMap, fullName, message, options))
+              .addHashEntry(generateToWrapped(typeMap, fullName, message, options))
               .addHashEntry(generateToJson(typeMap, fullName, message, options));
 
         staticMethods = staticMethods.endHash().add(';').newLine();
@@ -1069,6 +1070,115 @@ function generateToJson(
           from,
           isWithinOneOf(field) ? 'undefined' : defaultValue(typeMap, field, options)
         );
+      } else {
+        return CodeBlock.of('%L', from);
+      }
+    };
+
+    if (isMapType(typeMap, messageDesc, field, options)) {
+      // Maps might need their values transformed, i.e. bytes --> base64
+      func = func
+        .addStatement('obj.%L = {}', fieldName)
+        .beginControlFlow('if (message.%L)', fieldName)
+        .beginLambda('Object.entries(message.%L).forEach(([k, v]) =>', fieldName)
+        .addStatement('obj.%L[k] = %L', fieldName, readSnippet('v'))
+        .endLambda(')')
+        .endControlFlow();
+    } else if (isRepeated(field)) {
+      // Arrays might need their elements transformed
+      func = func
+        .beginControlFlow('if (message.%L)', fieldName)
+        .addStatement('obj.%L = message.%L.map(e => %L)', fieldName, fieldName, readSnippet('e'))
+        .nextControlFlow('else')
+        .addStatement('obj.%L = []', fieldName)
+        .endControlFlow();
+    } else if (isWithinOneOfThatShouldBeUnion(options, field)) {
+      // oneofs in a union are only output as `oneof name = ...`
+      let oneofName = maybeSnakeToCamel(messageDesc.oneofDecl[field.oneofIndex].name, options);
+      func = func.addStatement(
+        `message.%L?.$case === '%L' && (obj.%L = %L)`,
+        oneofName,
+        fieldName,
+        fieldName,
+        readSnippet(`message.${oneofName}?.${fieldName}`)
+      );
+    } else {
+      func = func.addStatement(
+        'message.%L !== undefined && (obj.%L = %L)',
+        fieldName,
+        fieldName,
+        readSnippet(`message.${fieldName}`)
+      );
+    }
+  });
+  return func.addStatement('return obj');
+}
+
+function generateToWrapped(
+  typeMap: TypeMap,
+  fullName: string,
+  messageDesc: DescriptorProto,
+  options: Options
+): FunctionSpec {
+  // create the basic function declaration
+  let func = FunctionSpec.create('toWrapped')
+    .addParameter(messageDesc.field.length > 0 ? 'message' : '_', fullName)
+    .returns(`${fullName}_Original`);
+  func = func.addCodeBlock(CodeBlock.empty().addStatement(`const obj: any = {}`));
+  // then add a case for each field
+  messageDesc.field.forEach((field) => {
+    const fieldName = maybeSnakeToCamel(field.name, options);
+
+    const readSnippet = (from: string): CodeBlock => {
+      if (isEnum(field)) {
+        const toJson = getEnumMethod(typeMap, field.typeName, 'ToJSON');
+        return isWithinOneOf(field)
+          ? CodeBlock.of('%L !== undefined ? %T(%L) : undefined', from, toJson, from)
+          : CodeBlock.of('%T(%L)', toJson, from);
+      } else if (isTimestamp(field)) {
+        return CodeBlock.of('%L !== undefined ? %L.toISOString() : null', from, from);
+      } else if (isMapType(typeMap, messageDesc, field, options)) {
+        // For map types, drill-in and then admittedly re-hard-code our per-value-type logic
+        const valueType = (typeMap.get(field.typeName)![2] as DescriptorProto).field[1];
+        if (isEnum(valueType)) {
+          const toJson = getEnumMethod(typeMap, valueType.typeName, 'ToJSON');
+          return CodeBlock.of('%T(%L)', toJson, from);
+        } else if (isBytes(valueType)) {
+          return CodeBlock.of('base64FromBytes(%L)', from);
+        } else if (isTimestamp(valueType)) {
+          return CodeBlock.of('%L.toISOString()', from);
+        } else if (isPrimitive(valueType)) {
+          return CodeBlock.of('%L', from);
+        } else {
+          return CodeBlock.of('%T.toWrapped(%L)', basicTypeName(typeMap, valueType, options).toString(), from);
+        }
+      } else if (isMessage(field) && !isValueType(field) && !isMapType(typeMap, messageDesc, field, options)) {
+        return CodeBlock.of(
+          '%L ? %T.toWrapped(%L) : %L',
+          from,
+          basicTypeName(typeMap, field, options, { keepValueType: true }),
+          from,
+          defaultValue(typeMap, field, options)
+        );
+      } else if (isBytes(field)) {
+        if (isWithinOneOf(field)) {
+          return CodeBlock.of('%L !== undefined ? base64FromBytes(%L) : undefined', from, from);
+        } else {
+          return CodeBlock.of(
+            'base64FromBytes(%L !== undefined ? %L : %L)',
+            from,
+            from,
+            defaultValue(typeMap, field, options)
+          );
+        }
+      } else if (isLong(field) && options.forceLong === LongOption.LONG) {
+        return CodeBlock.of(
+          '(%L || %L).toString()',
+          from,
+          isWithinOneOf(field) ? 'undefined' : defaultValue(typeMap, field, options)
+        );
+      } else if (isValueType(field)) {
+        return CodeBlock.of(`({ value: %L })`, from);
       } else {
         return CodeBlock.of('%L', from);
       }

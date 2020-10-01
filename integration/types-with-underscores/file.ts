@@ -72,6 +72,11 @@ export const Baz = {
     }
     return message;
   },
+  toWrapped(message: Baz): Baz_Original {
+    const obj: any = {};
+    message.foo !== undefined && (obj.foo = message.foo ? FooBar.toWrapped(message.foo) : undefined);
+    return obj;
+  },
   toJSON(message: Baz): unknown {
     const obj: any = {};
     message.foo !== undefined && (obj.foo = message.foo ? FooBar.toJSON(message.foo) : undefined);
@@ -108,6 +113,10 @@ export const FooBar = {
   fromWrappedPartial(_: DeepPartial<FooBar_Original>): FooBar {
     const message = { ...baseFooBar } as FooBar;
     return message;
+  },
+  toWrapped(_: FooBar): FooBar_Original {
+    const obj: any = {};
+    return obj;
   },
   toJSON(_: FooBar): unknown {
     const obj: any = {};

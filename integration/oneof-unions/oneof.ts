@@ -313,6 +313,21 @@ export const PleaseChoose = {
     }
     return message;
   },
+  toWrapped(message: PleaseChoose): PleaseChoose_Original {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.choice?.$case === 'aNumber' && (obj.aNumber = message.choice?.aNumber);
+    message.choice?.$case === 'aString' && (obj.aString = message.choice?.aString);
+    message.choice?.$case === 'aMessage' && (obj.aMessage = message.choice?.aMessage ? PleaseChoose_Submessage.toWrapped(message.choice?.aMessage) : undefined);
+    message.choice?.$case === 'aBool' && (obj.aBool = message.choice?.aBool);
+    message.choice?.$case === 'bunchaBytes' && (obj.bunchaBytes = message.choice?.bunchaBytes !== undefined ? base64FromBytes(message.choice?.bunchaBytes) : undefined);
+    message.choice?.$case === 'anEnum' && (obj.anEnum = message.choice?.anEnum !== undefined ? pleaseChoose_StateEnumToJSON(message.choice?.anEnum) : undefined);
+    message.age !== undefined && (obj.age = message.age);
+    message.eitherOr?.$case === 'either' && (obj.either = message.eitherOr?.either);
+    message.eitherOr?.$case === 'or' && (obj.or = message.eitherOr?.or);
+    message.eitherOr?.$case === 'thirdOption' && (obj.thirdOption = message.eitherOr?.thirdOption);
+    return obj;
+  },
   toJSON(message: PleaseChoose): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
@@ -372,6 +387,11 @@ export const PleaseChoose_Submessage = {
       message.name = object.name;
     }
     return message;
+  },
+  toWrapped(message: PleaseChoose_Submessage): PleaseChoose_Submessage_Original {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    return obj;
   },
   toJSON(message: PleaseChoose_Submessage): unknown {
     const obj: any = {};
@@ -439,6 +459,12 @@ export const SimpleButOptional = {
       message.age = object.age;
     }
     return message;
+  },
+  toWrapped(message: SimpleButOptional): SimpleButOptional_Original {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.age !== undefined && (obj.age = message.age);
+    return obj;
   },
   toJSON(message: SimpleButOptional): unknown {
     const obj: any = {};

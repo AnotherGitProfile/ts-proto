@@ -766,6 +766,36 @@ export const Simple = {
     }
     return message;
   },
+  toWrapped(message: Simple): Simple_Original {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.age !== undefined && (obj.age = message.age);
+    message.createdAt !== undefined && (obj.createdAt = message.createdAt !== undefined ? message.createdAt.toISOString() : null);
+    message.child !== undefined && (obj.child = message.child ? Child.toWrapped(message.child) : undefined);
+    message.state !== undefined && (obj.state = stateEnumToJSON(message.state));
+    if (message.grandChildren) {
+      obj.grandChildren = message.grandChildren.map(e => e ? Child.toWrapped(e) : undefined);
+    } else {
+      obj.grandChildren = [];
+    }
+    if (message.coins) {
+      obj.coins = message.coins.map(e => e);
+    } else {
+      obj.coins = [];
+    }
+    if (message.snacks) {
+      obj.snacks = message.snacks.map(e => e);
+    } else {
+      obj.snacks = [];
+    }
+    if (message.oldStates) {
+      obj.oldStates = message.oldStates.map(e => stateEnumToJSON(e));
+    } else {
+      obj.oldStates = [];
+    }
+    message.thing !== undefined && (obj.thing = message.thing ? ImportedThing.toWrapped(message.thing) : undefined);
+    return obj;
+  },
   toJSON(message: Simple): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
@@ -866,6 +896,12 @@ export const Child = {
     }
     return message;
   },
+  toWrapped(message: Child): Child_Original {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.type !== undefined && (obj.type = child_TypeToJSON(message.type));
+    return obj;
+  },
   toJSON(message: Child): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
@@ -963,6 +999,13 @@ export const Nested = {
     }
     return message;
   },
+  toWrapped(message: Nested): Nested_Original {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.message !== undefined && (obj.message = message.message ? Nested_InnerMessage.toWrapped(message.message) : undefined);
+    message.state !== undefined && (obj.state = nested_InnerEnumToJSON(message.state));
+    return obj;
+  },
   toJSON(message: Nested): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
@@ -1042,6 +1085,12 @@ export const Nested_InnerMessage = {
     }
     return message;
   },
+  toWrapped(message: Nested_InnerMessage): Nested_InnerMessage_Original {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.deep !== undefined && (obj.deep = message.deep ? Nested_InnerMessage_DeepMessage.toWrapped(message.deep) : undefined);
+    return obj;
+  },
   toJSON(message: Nested_InnerMessage): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
@@ -1098,6 +1147,11 @@ export const Nested_InnerMessage_DeepMessage = {
       message.name = "";
     }
     return message;
+  },
+  toWrapped(message: Nested_InnerMessage_DeepMessage): Nested_InnerMessage_DeepMessage_Original {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    return obj;
   },
   toJSON(message: Nested_InnerMessage_DeepMessage): unknown {
     const obj: any = {};
@@ -1177,6 +1231,12 @@ export const OneOfMessage = {
       message.last = undefined;
     }
     return message;
+  },
+  toWrapped(message: OneOfMessage): OneOfMessage_Original {
+    const obj: any = {};
+    message.first !== undefined && (obj.first = message.first);
+    message.last !== undefined && (obj.last = message.last);
+    return obj;
   },
   toJSON(message: OneOfMessage): unknown {
     const obj: any = {};
@@ -1329,6 +1389,23 @@ export const SimpleWithWrappers = {
     }
     return message;
   },
+  toWrapped(message: SimpleWithWrappers): SimpleWithWrappers_Original {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = ({ value: message.name }));
+    message.age !== undefined && (obj.age = ({ value: message.age }));
+    message.enabled !== undefined && (obj.enabled = ({ value: message.enabled }));
+    if (message.coins) {
+      obj.coins = message.coins.map(e => ({ value: e }));
+    } else {
+      obj.coins = [];
+    }
+    if (message.snacks) {
+      obj.snacks = message.snacks.map(e => ({ value: e }));
+    } else {
+      obj.snacks = [];
+    }
+    return obj;
+  },
   toJSON(message: SimpleWithWrappers): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
@@ -1396,6 +1473,11 @@ export const Entity = {
       message.id = 0;
     }
     return message;
+  },
+  toWrapped(message: Entity): Entity_Original {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
   },
   toJSON(message: Entity): unknown {
     const obj: any = {};
@@ -1530,6 +1612,28 @@ export const SimpleWithMap = {
     }
     return message;
   },
+  toWrapped(message: SimpleWithMap): SimpleWithMap_Original {
+    const obj: any = {};
+    obj.entitiesById = {};
+    if (message.entitiesById) {
+      Object.entries(message.entitiesById).forEach(([k, v]) => {
+        obj.entitiesById[k] = Entity.toWrapped(v);
+      })
+    }
+    obj.nameLookup = {};
+    if (message.nameLookup) {
+      Object.entries(message.nameLookup).forEach(([k, v]) => {
+        obj.nameLookup[k] = v;
+      })
+    }
+    obj.intLookup = {};
+    if (message.intLookup) {
+      Object.entries(message.intLookup).forEach(([k, v]) => {
+        obj.intLookup[k] = v;
+      })
+    }
+    return obj;
+  },
   toJSON(message: SimpleWithMap): unknown {
     const obj: any = {};
     obj.entitiesById = {};
@@ -1624,6 +1728,12 @@ export const SimpleWithMap_EntitiesByIdEntry = {
     }
     return message;
   },
+  toWrapped(message: SimpleWithMap_EntitiesByIdEntry): SimpleWithMap_EntitiesByIdEntry_Original {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value ? Entity.toWrapped(message.value) : undefined);
+    return obj;
+  },
   toJSON(message: SimpleWithMap_EntitiesByIdEntry): unknown {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
@@ -1699,6 +1809,12 @@ export const SimpleWithMap_NameLookupEntry = {
       message.value = "";
     }
     return message;
+  },
+  toWrapped(message: SimpleWithMap_NameLookupEntry): SimpleWithMap_NameLookupEntry_Original {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
   },
   toJSON(message: SimpleWithMap_NameLookupEntry): unknown {
     const obj: any = {};
@@ -1776,6 +1892,12 @@ export const SimpleWithMap_IntLookupEntry = {
     }
     return message;
   },
+  toWrapped(message: SimpleWithMap_IntLookupEntry): SimpleWithMap_IntLookupEntry_Original {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
   toJSON(message: SimpleWithMap_IntLookupEntry): unknown {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
@@ -1845,6 +1967,16 @@ export const SimpleWithSnakeCaseMap = {
       })
     }
     return message;
+  },
+  toWrapped(message: SimpleWithSnakeCaseMap): SimpleWithSnakeCaseMap_Original {
+    const obj: any = {};
+    obj.entitiesById = {};
+    if (message.entitiesById) {
+      Object.entries(message.entitiesById).forEach(([k, v]) => {
+        obj.entitiesById[k] = Entity.toWrapped(v);
+      })
+    }
+    return obj;
   },
   toJSON(message: SimpleWithSnakeCaseMap): unknown {
     const obj: any = {};
@@ -1928,6 +2060,12 @@ export const SimpleWithSnakeCaseMap_EntitiesByIdEntry = {
     }
     return message;
   },
+  toWrapped(message: SimpleWithSnakeCaseMap_EntitiesByIdEntry): SimpleWithSnakeCaseMap_EntitiesByIdEntry_Original {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value ? Entity.toWrapped(message.value) : undefined);
+    return obj;
+  },
   toJSON(message: SimpleWithSnakeCaseMap_EntitiesByIdEntry): unknown {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
@@ -1985,6 +2123,11 @@ export const PingRequest = {
     }
     return message;
   },
+  toWrapped(message: PingRequest): PingRequest_Original {
+    const obj: any = {};
+    message.input !== undefined && (obj.input = message.input);
+    return obj;
+  },
   toJSON(message: PingRequest): unknown {
     const obj: any = {};
     message.input !== undefined && (obj.input = message.input);
@@ -2040,6 +2183,11 @@ export const PingResponse = {
       message.output = "";
     }
     return message;
+  },
+  toWrapped(message: PingResponse): PingResponse_Original {
+    const obj: any = {};
+    message.output !== undefined && (obj.output = message.output);
+    return obj;
   },
   toJSON(message: PingResponse): unknown {
     const obj: any = {};
@@ -2305,6 +2453,22 @@ export const Numbers = {
       message.sfixed64 = "0";
     }
     return message;
+  },
+  toWrapped(message: Numbers): Numbers_Original {
+    const obj: any = {};
+    message.double !== undefined && (obj.double = message.double);
+    message.float !== undefined && (obj.float = message.float);
+    message.int32 !== undefined && (obj.int32 = message.int32);
+    message.int64 !== undefined && (obj.int64 = message.int64);
+    message.uint32 !== undefined && (obj.uint32 = message.uint32);
+    message.uint64 !== undefined && (obj.uint64 = message.uint64);
+    message.sint32 !== undefined && (obj.sint32 = message.sint32);
+    message.sint64 !== undefined && (obj.sint64 = message.sint64);
+    message.fixed32 !== undefined && (obj.fixed32 = message.fixed32);
+    message.fixed64 !== undefined && (obj.fixed64 = message.fixed64);
+    message.sfixed32 !== undefined && (obj.sfixed32 = message.sfixed32);
+    message.sfixed64 !== undefined && (obj.sfixed64 = message.sfixed64);
+    return obj;
   },
   toJSON(message: Numbers): unknown {
     const obj: any = {};

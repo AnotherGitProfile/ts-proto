@@ -91,6 +91,11 @@ export const ImportedThing = {
     }
     return message;
   },
+  toWrapped(message: ImportedThing): ImportedThing_Original {
+    const obj: any = {};
+    message.createdAt !== undefined && (obj.createdAt = message.createdAt !== undefined ? message.createdAt.toISOString() : null);
+    return obj;
+  },
   toJSON(message: ImportedThing): unknown {
     const obj: any = {};
     message.createdAt !== undefined && (obj.createdAt = message.createdAt !== undefined ? message.createdAt.toISOString() : null);

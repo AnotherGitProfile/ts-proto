@@ -59,6 +59,11 @@ export const Point = {
     }
     return message;
   },
+  toWrapped(message: Point): Point_Original {
+    const obj: any = {};
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Buffer(0)));
+    return obj;
+  },
   toJSON(message: Point): unknown {
     const obj: any = {};
     message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Buffer(0)));

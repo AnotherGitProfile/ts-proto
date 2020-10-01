@@ -279,6 +279,12 @@ export const Timestamp = {
     }
     return message;
   },
+  toWrapped(message: Timestamp): Timestamp_Original {
+    const obj: any = {};
+    message.seconds !== undefined && (obj.seconds = (message.seconds || Long.ZERO).toString());
+    message.nanos !== undefined && (obj.nanos = message.nanos);
+    return obj;
+  },
   toJSON(message: Timestamp): unknown {
     const obj: any = {};
     message.seconds !== undefined && (obj.seconds = (message.seconds || Long.ZERO).toString());

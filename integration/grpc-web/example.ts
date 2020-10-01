@@ -334,6 +334,12 @@ export const DashFlash = {
     }
     return message;
   },
+  toWrapped(message: DashFlash): DashFlash_Original {
+    const obj: any = {};
+    message.msg !== undefined && (obj.msg = message.msg);
+    message.type !== undefined && (obj.type = dashFlash_TypeToJSON(message.type));
+    return obj;
+  },
   toJSON(message: DashFlash): unknown {
     const obj: any = {};
     message.msg !== undefined && (obj.msg = message.msg);
@@ -437,6 +443,17 @@ export const DashUserSettingsState = {
     }
     return message;
   },
+  toWrapped(message: DashUserSettingsState): DashUserSettingsState_Original {
+    const obj: any = {};
+    message.email !== undefined && (obj.email = message.email);
+    message.urls !== undefined && (obj.urls = message.urls ? DashUserSettingsState_URLs.toWrapped(message.urls) : undefined);
+    if (message.flashes) {
+      obj.flashes = message.flashes.map(e => e ? DashFlash.toWrapped(e) : undefined);
+    } else {
+      obj.flashes = [];
+    }
+    return obj;
+  },
   toJSON(message: DashUserSettingsState): unknown {
     const obj: any = {};
     message.email !== undefined && (obj.email = message.email);
@@ -517,6 +534,12 @@ export const DashUserSettingsState_URLs = {
       message.connectGithub = "";
     }
     return message;
+  },
+  toWrapped(message: DashUserSettingsState_URLs): DashUserSettingsState_URLs_Original {
+    const obj: any = {};
+    message.connectGoogle !== undefined && (obj.connectGoogle = message.connectGoogle);
+    message.connectGithub !== undefined && (obj.connectGithub = message.connectGithub);
+    return obj;
   },
   toJSON(message: DashUserSettingsState_URLs): unknown {
     const obj: any = {};
@@ -634,6 +657,14 @@ export const DashCred = {
     }
     return message;
   },
+  toWrapped(message: DashCred): DashCred_Original {
+    const obj: any = {};
+    message.description !== undefined && (obj.description = message.description);
+    message.metadata !== undefined && (obj.metadata = message.metadata);
+    message.token !== undefined && (obj.token = message.token);
+    message.id !== undefined && (obj.id = message.id ? ID.toWrapped(message.id) : undefined);
+    return obj;
+  },
   toJSON(message: DashCred): unknown {
     const obj: any = {};
     message.description !== undefined && (obj.description = message.description);
@@ -711,6 +742,12 @@ export const DashAPICredsCreateReq = {
       message.metadata = "";
     }
     return message;
+  },
+  toWrapped(message: DashAPICredsCreateReq): DashAPICredsCreateReq_Original {
+    const obj: any = {};
+    message.description !== undefined && (obj.description = message.description);
+    message.metadata !== undefined && (obj.metadata = message.metadata);
+    return obj;
   },
   toJSON(message: DashAPICredsCreateReq): unknown {
     const obj: any = {};
@@ -828,6 +865,14 @@ export const DashAPICredsUpdateReq = {
     }
     return message;
   },
+  toWrapped(message: DashAPICredsUpdateReq): DashAPICredsUpdateReq_Original {
+    const obj: any = {};
+    message.credSid !== undefined && (obj.credSid = message.credSid);
+    message.description !== undefined && (obj.description = message.description);
+    message.metadata !== undefined && (obj.metadata = message.metadata);
+    message.id !== undefined && (obj.id = message.id ? ID.toWrapped(message.id) : undefined);
+    return obj;
+  },
   toJSON(message: DashAPICredsUpdateReq): unknown {
     const obj: any = {};
     message.credSid !== undefined && (obj.credSid = message.credSid);
@@ -907,6 +952,12 @@ export const DashAPICredsDeleteReq = {
       message.id = undefined;
     }
     return message;
+  },
+  toWrapped(message: DashAPICredsDeleteReq): DashAPICredsDeleteReq_Original {
+    const obj: any = {};
+    message.credSid !== undefined && (obj.credSid = message.credSid);
+    message.id !== undefined && (obj.id = message.id ? ID.toWrapped(message.id) : undefined);
+    return obj;
   },
   toJSON(message: DashAPICredsDeleteReq): unknown {
     const obj: any = {};

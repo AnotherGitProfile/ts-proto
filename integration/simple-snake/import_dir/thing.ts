@@ -86,6 +86,11 @@ export const ImportedThing = {
     }
     return message;
   },
+  toWrapped(message: ImportedThing): ImportedThing_Original {
+    const obj: any = {};
+    message.created_at !== undefined && (obj.created_at = message.created_at !== undefined ? message.created_at.toISOString() : null);
+    return obj;
+  },
   toJSON(message: ImportedThing): unknown {
     const obj: any = {};
     message.created_at !== undefined && (obj.created_at = message.created_at !== undefined ? message.created_at.toISOString() : null);
