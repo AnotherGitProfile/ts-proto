@@ -3,4 +3,4 @@
 yarn build
 (cd ./integration || exit; ./codegen.sh)
 yarn test
-yarn publish
+yarn publish --access=public
