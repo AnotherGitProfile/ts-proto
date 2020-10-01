@@ -321,7 +321,7 @@ export const PleaseChoose = {
     message.choice?.$case === 'aMessage' && (obj.aMessage = message.choice?.aMessage ? PleaseChoose_Submessage.toWrapped(message.choice?.aMessage) : undefined);
     message.choice?.$case === 'aBool' && (obj.aBool = message.choice?.aBool);
     message.choice?.$case === 'bunchaBytes' && (obj.bunchaBytes = message.choice?.bunchaBytes !== undefined ? base64FromBytes(message.choice?.bunchaBytes) : undefined);
-    message.choice?.$case === 'anEnum' && (obj.anEnum = message.choice?.anEnum !== undefined ? pleaseChoose_StateEnumToJSON(message.choice?.anEnum) : undefined);
+    message.choice?.$case === 'anEnum' && (obj.anEnum = message.choice?.anEnum !== undefined ? pleaseChoose_StateEnumFromJSON(message.choice?.anEnum) : undefined);
     message.age !== undefined && (obj.age = message.age);
     message.eitherOr?.$case === 'either' && (obj.either = message.eitherOr?.either);
     message.eitherOr?.$case === 'or' && (obj.or = message.eitherOr?.or);

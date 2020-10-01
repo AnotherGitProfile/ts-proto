@@ -773,9 +773,9 @@ export const Simple = {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     message.age !== undefined && (obj.age = message.age);
-    message.created_at !== undefined && (obj.created_at = message.created_at !== undefined ? message.created_at.toISOString() : null);
+    message.created_at !== undefined && (obj.created_at = message.created_at !== undefined ? toTimestamp(message.created_at) : null);
     message.child !== undefined && (obj.child = message.child ? Child.toWrapped(message.child) : undefined);
-    message.state !== undefined && (obj.state = stateEnumToJSON(message.state));
+    message.state !== undefined && (obj.state = stateEnumFromJSON(message.state));
     if (message.grand_children) {
       obj.grand_children = message.grand_children.map(e => e ? Child.toWrapped(e) : undefined);
     } else {
@@ -792,7 +792,7 @@ export const Simple = {
       obj.snacks = [];
     }
     if (message.old_states) {
-      obj.old_states = message.old_states.map(e => stateEnumToJSON(e));
+      obj.old_states = message.old_states.map(e => stateEnumFromJSON(e));
     } else {
       obj.old_states = [];
     }
@@ -902,7 +902,7 @@ export const Child = {
   toWrapped(message: Child): Child_Original {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
-    message.type !== undefined && (obj.type = child_TypeToJSON(message.type));
+    message.type !== undefined && (obj.type = child_TypeFromJSON(message.type));
     return obj;
   },
   toJSON(message: Child): unknown {
@@ -1006,7 +1006,7 @@ export const Nested = {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     message.message !== undefined && (obj.message = message.message ? Nested_InnerMessage.toWrapped(message.message) : undefined);
-    message.state !== undefined && (obj.state = nested_InnerEnumToJSON(message.state));
+    message.state !== undefined && (obj.state = nested_InnerEnumFromJSON(message.state));
     return obj;
   },
   toJSON(message: Nested): unknown {

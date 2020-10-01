@@ -546,7 +546,7 @@ export const Tile_Feature = {
     } else {
       obj.tags = [];
     }
-    message.type !== undefined && (obj.type = tile_GeomTypeToJSON(message.type));
+    message.type !== undefined && (obj.type = tile_GeomTypeFromJSON(message.type));
     if (message.geometry) {
       obj.geometry = message.geometry.map(e => e);
     } else {

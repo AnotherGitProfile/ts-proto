@@ -337,7 +337,7 @@ export const DashFlash = {
   toWrapped(message: DashFlash): DashFlash_Original {
     const obj: any = {};
     message.msg !== undefined && (obj.msg = message.msg);
-    message.type !== undefined && (obj.type = dashFlash_TypeToJSON(message.type));
+    message.type !== undefined && (obj.type = dashFlash_TypeFromJSON(message.type));
     return obj;
   },
   toJSON(message: DashFlash): unknown {

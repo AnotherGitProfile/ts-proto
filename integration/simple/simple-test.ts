@@ -1,5 +1,14 @@
 import { Reader } from 'protobufjs';
-import { Child_Type, Nested, Nested_InnerEnum, OneOfMessage, Simple, SimpleWithMap, StateEnum, SimpleWithMapOfEnums } from './simple';
+import {
+  Child_Type,
+  Nested,
+  Nested_InnerEnum,
+  OneOfMessage,
+  Simple,
+  SimpleWithMap,
+  StateEnum,
+  SimpleWithMapOfEnums,
+} from './simple';
 import { simple as pbjs, google } from './pbjs';
 import ISimple = pbjs.ISimple;
 import PbChild = pbjs.Child;
@@ -276,7 +285,7 @@ describe('simple', () => {
     const message = {
       enumsById: {
         3: PbState.ON,
-      }
+      },
     };
 
     const encoded = PbSimpleWithMapOfEnums.encode(PbSimpleWithMapOfEnums.create(message)).finish();
@@ -290,7 +299,7 @@ describe('simple', () => {
   it('can encode s.t. pbjs can decode', () => {
     const message = {
       enumsById: {
-        2: PbState.OFF
+        2: PbState.OFF,
       },
     };
 
@@ -300,5 +309,68 @@ describe('simple', () => {
     expect(decoded).toBeTruthy();
     expect(decoded.enumsById).toBeTruthy();
     expect(decoded.enumsById[2]).toBe(PbState.OFF);
+  });
+
+  it('toWrapped', () => {
+    const message: Simple = {
+      name: 'Asdf',
+      age: 1,
+      createdAt: jan1,
+      state: StateEnum.ON,
+      child: {
+        name: 'Foo',
+        type: Child_Type.BAD,
+      },
+      grandChildren: [
+        {
+          name: 'Foo',
+          type: Child_Type.BAD,
+        },
+      ],
+      coins: [1, 2, 3],
+      snacks: ['a', 'b'],
+      oldStates: [StateEnum.OFF, StateEnum.UNKNOWN],
+      thing: undefined,
+      blobs: [],
+      birthday: undefined,
+      blob: new Uint8Array(),
+    };
+    const s2 = Simple.toWrapped(message);
+    expect(s2).toMatchInlineSnapshot(`
+      Object {
+        "age": 1,
+        "blob": "",
+        "blobs": Array [],
+        "child": Object {
+          "name": "Foo",
+          "type": 2,
+        },
+        "coins": Array [
+          1,
+          2,
+          3,
+        ],
+        "createdAt": Object {
+          "nanos": 0,
+          "seconds": 0,
+        },
+        "grandChildren": Array [
+          Object {
+            "name": "Foo",
+            "type": 2,
+          },
+        ],
+        "name": "Asdf",
+        "oldStates": Array [
+          3,
+          0,
+        ],
+        "snacks": Array [
+          "a",
+          "b",
+        ],
+        "state": 2,
+      }
+    `);
   });
 });

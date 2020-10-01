@@ -1131,12 +1131,12 @@ function generateToWrapped(
 
     const readSnippet = (from: string): CodeBlock => {
       if (isEnum(field)) {
-        const toJson = getEnumMethod(typeMap, field.typeName, 'ToJSON');
+        const fromJson = getEnumMethod(typeMap, field.typeName, 'FromJSON');
         return isWithinOneOf(field)
-          ? CodeBlock.of('%L !== undefined ? %T(%L) : undefined', from, toJson, from)
-          : CodeBlock.of('%T(%L)', toJson, from);
+          ? CodeBlock.of('%L !== undefined ? %T(%L) : undefined', from, fromJson, from)
+          : CodeBlock.of('%T(%L)', fromJson, from);
       } else if (isTimestamp(field)) {
-        return CodeBlock.of('%L !== undefined ? %L.toISOString() : null', from, from);
+        return CodeBlock.of('%L !== undefined ? toTimestamp(%L) : null', from, from);
       } else if (isMapType(typeMap, messageDesc, field, options)) {
         // For map types, drill-in and then admittedly re-hard-code our per-value-type logic
         const valueType = (typeMap.get(field.typeName)![2] as DescriptorProto).field[1];
@@ -1146,7 +1146,7 @@ function generateToWrapped(
         } else if (isBytes(valueType)) {
           return CodeBlock.of('base64FromBytes(%L)', from);
         } else if (isTimestamp(valueType)) {
-          return CodeBlock.of('%L.toISOString()', from);
+          return CodeBlock.of('toTimestamp(%L)', from);
         } else if (isPrimitive(valueType)) {
           return CodeBlock.of('%L', from);
         } else {

@@ -371,7 +371,7 @@ export const PleaseChoose = {
     message.aMessage !== undefined && (obj.aMessage = message.aMessage ? PleaseChoose_Submessage.toWrapped(message.aMessage) : undefined);
     message.aBool !== undefined && (obj.aBool = message.aBool);
     message.bunchaBytes !== undefined && (obj.bunchaBytes = message.bunchaBytes !== undefined ? base64FromBytes(message.bunchaBytes) : undefined);
-    message.anEnum !== undefined && (obj.anEnum = message.anEnum !== undefined ? pleaseChoose_StateEnumToJSON(message.anEnum) : undefined);
+    message.anEnum !== undefined && (obj.anEnum = message.anEnum !== undefined ? pleaseChoose_StateEnumFromJSON(message.anEnum) : undefined);
     message.age !== undefined && (obj.age = message.age);
     message.either !== undefined && (obj.either = message.either);
     message.or !== undefined && (obj.or = message.or);
