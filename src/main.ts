@@ -1136,7 +1136,7 @@ function generateToWrapped(
           ? CodeBlock.of('%L !== undefined && %L !== null ? %T(%L) : undefined', from, from, fromJson, from)
           : CodeBlock.of('%T(%L)', fromJson, from);
       } else if (isTimestamp(field)) {
-        return CodeBlock.of('%L !== undefined && %L !== null ? toTimestamp(%L) : null', from, from, from);
+        return CodeBlock.of('toTimestamp(%L)', from);
       } else if (isMapType(typeMap, messageDesc, field, options)) {
         // For map types, drill-in and then admittedly re-hard-code our per-value-type logic
         const valueType = (typeMap.get(field.typeName)![2] as DescriptorProto).field[1];
@@ -1213,7 +1213,8 @@ function generateToWrapped(
       );
     } else {
       func = func.addStatement(
-        'message.%L !== undefined && (obj.%L = %L)',
+        'message.%L !== undefined && message.%L !== null && (obj.%L = %L)',
+        fieldName,
         fieldName,
         fieldName,
         readSnippet(`message.${fieldName}`)

@@ -339,7 +339,6 @@ describe('simple', () => {
     expect(s2).toMatchInlineSnapshot(`
       Object {
         "age": 1,
-        "birthday": undefined,
         "blob": "",
         "blobs": Array [],
         "child": Object {

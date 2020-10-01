@@ -365,17 +365,17 @@ export const PleaseChoose = {
   },
   toWrapped(message: PleaseChoose): PleaseChoose_Original {
     const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.aNumber !== undefined && (obj.aNumber = message.aNumber);
-    message.aString !== undefined && (obj.aString = message.aString);
-    message.aMessage !== undefined && (obj.aMessage = message.aMessage ? PleaseChoose_Submessage.toWrapped(message.aMessage) : undefined);
-    message.aBool !== undefined && (obj.aBool = message.aBool);
-    message.bunchaBytes !== undefined && (obj.bunchaBytes = message.bunchaBytes !== undefined ? base64FromBytes(message.bunchaBytes) : undefined);
-    message.anEnum !== undefined && (obj.anEnum = message.anEnum !== undefined && message.anEnum !== null ? pleaseChoose_StateEnumFromJSON(message.anEnum) : undefined);
-    message.age !== undefined && (obj.age = message.age);
-    message.either !== undefined && (obj.either = message.either);
-    message.or !== undefined && (obj.or = message.or);
-    message.thirdOption !== undefined && (obj.thirdOption = message.thirdOption);
+    message.name !== undefined && message.name !== null && (obj.name = message.name);
+    message.aNumber !== undefined && message.aNumber !== null && (obj.aNumber = message.aNumber);
+    message.aString !== undefined && message.aString !== null && (obj.aString = message.aString);
+    message.aMessage !== undefined && message.aMessage !== null && (obj.aMessage = message.aMessage ? PleaseChoose_Submessage.toWrapped(message.aMessage) : undefined);
+    message.aBool !== undefined && message.aBool !== null && (obj.aBool = message.aBool);
+    message.bunchaBytes !== undefined && message.bunchaBytes !== null && (obj.bunchaBytes = message.bunchaBytes !== undefined ? base64FromBytes(message.bunchaBytes) : undefined);
+    message.anEnum !== undefined && message.anEnum !== null && (obj.anEnum = message.anEnum !== undefined && message.anEnum !== null ? pleaseChoose_StateEnumFromJSON(message.anEnum) : undefined);
+    message.age !== undefined && message.age !== null && (obj.age = message.age);
+    message.either !== undefined && message.either !== null && (obj.either = message.either);
+    message.or !== undefined && message.or !== null && (obj.or = message.or);
+    message.thirdOption !== undefined && message.thirdOption !== null && (obj.thirdOption = message.thirdOption);
     return obj;
   },
   toJSON(message: PleaseChoose): unknown {
@@ -446,7 +446,7 @@ export const PleaseChoose_Submessage = {
   },
   toWrapped(message: PleaseChoose_Submessage): PleaseChoose_Submessage_Original {
     const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
+    message.name !== undefined && message.name !== null && (obj.name = message.name);
     return obj;
   },
   toJSON(message: PleaseChoose_Submessage): unknown {

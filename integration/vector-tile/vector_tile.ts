@@ -380,13 +380,13 @@ export const Tile_Value = {
   },
   toWrapped(message: Tile_Value): Tile_Value_Original {
     const obj: any = {};
-    message.stringValue !== undefined && (obj.stringValue = message.stringValue);
-    message.floatValue !== undefined && (obj.floatValue = message.floatValue);
-    message.doubleValue !== undefined && (obj.doubleValue = message.doubleValue);
-    message.intValue !== undefined && (obj.intValue = message.intValue);
-    message.uintValue !== undefined && (obj.uintValue = message.uintValue);
-    message.sintValue !== undefined && (obj.sintValue = message.sintValue);
-    message.boolValue !== undefined && (obj.boolValue = message.boolValue);
+    message.stringValue !== undefined && message.stringValue !== null && (obj.stringValue = message.stringValue);
+    message.floatValue !== undefined && message.floatValue !== null && (obj.floatValue = message.floatValue);
+    message.doubleValue !== undefined && message.doubleValue !== null && (obj.doubleValue = message.doubleValue);
+    message.intValue !== undefined && message.intValue !== null && (obj.intValue = message.intValue);
+    message.uintValue !== undefined && message.uintValue !== null && (obj.uintValue = message.uintValue);
+    message.sintValue !== undefined && message.sintValue !== null && (obj.sintValue = message.sintValue);
+    message.boolValue !== undefined && message.boolValue !== null && (obj.boolValue = message.boolValue);
     return obj;
   },
   toJSON(message: Tile_Value): unknown {
@@ -540,13 +540,13 @@ export const Tile_Feature = {
   },
   toWrapped(message: Tile_Feature): Tile_Feature_Original {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.id !== undefined && message.id !== null && (obj.id = message.id);
     if (message.tags) {
       obj.tags = message.tags.map(e => e);
     } else {
       obj.tags = [];
     }
-    message.type !== undefined && (obj.type = tile_GeomTypeFromJSON(message.type));
+    message.type !== undefined && message.type !== null && (obj.type = tile_GeomTypeFromJSON(message.type));
     if (message.geometry) {
       obj.geometry = message.geometry.map(e => e);
     } else {
@@ -736,8 +736,8 @@ export const Tile_Layer = {
   },
   toWrapped(message: Tile_Layer): Tile_Layer_Original {
     const obj: any = {};
-    message.version !== undefined && (obj.version = message.version);
-    message.name !== undefined && (obj.name = message.name);
+    message.version !== undefined && message.version !== null && (obj.version = message.version);
+    message.name !== undefined && message.name !== null && (obj.name = message.name);
     if (message.features) {
       obj.features = message.features.map(e => e ? Tile_Feature.toWrapped(e) : undefined);
     } else {
@@ -753,7 +753,7 @@ export const Tile_Layer = {
     } else {
       obj.values = [];
     }
-    message.extent !== undefined && (obj.extent = message.extent);
+    message.extent !== undefined && message.extent !== null && (obj.extent = message.extent);
     return obj;
   },
   toJSON(message: Tile_Layer): unknown {

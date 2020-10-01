@@ -119,16 +119,13 @@ describe('simple value types', () => {
     const s1 = {
       name: 'foo',
       snacks: ['a', 'b'],
-      age: 1,
+      age: undefined,
       enabled: true,
       coins: [],
     };
     const s2 = SimpleWithWrappers.toWrapped(s1);
     expect(s2).toMatchInlineSnapshot(`
       Object {
-        "age": Object {
-          "value": 1,
-        },
         "coins": Array [],
         "enabled": Object {
           "value": true,

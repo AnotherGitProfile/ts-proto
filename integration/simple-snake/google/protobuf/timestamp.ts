@@ -288,8 +288,8 @@ export const Timestamp = {
   },
   toWrapped(message: Timestamp): Timestamp_Original {
     const obj: any = {};
-    message.seconds !== undefined && (obj.seconds = message.seconds);
-    message.nanos !== undefined && (obj.nanos = message.nanos);
+    message.seconds !== undefined && message.seconds !== null && (obj.seconds = message.seconds);
+    message.nanos !== undefined && message.nanos !== null && (obj.nanos = message.nanos);
     return obj;
   },
   toJSON(message: Timestamp): unknown {

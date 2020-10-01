@@ -315,14 +315,14 @@ export const PleaseChoose = {
   },
   toWrapped(message: PleaseChoose): PleaseChoose_Original {
     const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
+    message.name !== undefined && message.name !== null && (obj.name = message.name);
     message.choice?.$case === 'aNumber' && (obj.aNumber = message.choice?.aNumber);
     message.choice?.$case === 'aString' && (obj.aString = message.choice?.aString);
     message.choice?.$case === 'aMessage' && (obj.aMessage = message.choice?.aMessage ? PleaseChoose_Submessage.toWrapped(message.choice?.aMessage) : undefined);
     message.choice?.$case === 'aBool' && (obj.aBool = message.choice?.aBool);
     message.choice?.$case === 'bunchaBytes' && (obj.bunchaBytes = message.choice?.bunchaBytes !== undefined ? base64FromBytes(message.choice?.bunchaBytes) : undefined);
     message.choice?.$case === 'anEnum' && (obj.anEnum = message.choice?.anEnum !== undefined && message.choice?.anEnum !== null ? pleaseChoose_StateEnumFromJSON(message.choice?.anEnum) : undefined);
-    message.age !== undefined && (obj.age = message.age);
+    message.age !== undefined && message.age !== null && (obj.age = message.age);
     message.eitherOr?.$case === 'either' && (obj.either = message.eitherOr?.either);
     message.eitherOr?.$case === 'or' && (obj.or = message.eitherOr?.or);
     message.eitherOr?.$case === 'thirdOption' && (obj.thirdOption = message.eitherOr?.thirdOption);
@@ -390,7 +390,7 @@ export const PleaseChoose_Submessage = {
   },
   toWrapped(message: PleaseChoose_Submessage): PleaseChoose_Submessage_Original {
     const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
+    message.name !== undefined && message.name !== null && (obj.name = message.name);
     return obj;
   },
   toJSON(message: PleaseChoose_Submessage): unknown {
@@ -462,8 +462,8 @@ export const SimpleButOptional = {
   },
   toWrapped(message: SimpleButOptional): SimpleButOptional_Original {
     const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.age !== undefined && (obj.age = message.age);
+    message.name !== undefined && message.name !== null && (obj.name = message.name);
+    message.age !== undefined && message.age !== null && (obj.age = message.age);
     return obj;
   },
   toJSON(message: SimpleButOptional): unknown {

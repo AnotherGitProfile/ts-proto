@@ -559,8 +559,8 @@ export const BatchMapQueryResponse_EntitiesEntry = {
   },
   toWrapped(message: BatchMapQueryResponse_EntitiesEntry): BatchMapQueryResponse_EntitiesEntry_Original {
     const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value ? Entity.toWrapped(message.value) : undefined);
+    message.key !== undefined && message.key !== null && (obj.key = message.key);
+    message.value !== undefined && message.value !== null && (obj.value = message.value ? Entity.toWrapped(message.value) : undefined);
     return obj;
   },
   toJSON(message: BatchMapQueryResponse_EntitiesEntry): unknown {
@@ -622,7 +622,7 @@ export const GetOnlyMethodRequest = {
   },
   toWrapped(message: GetOnlyMethodRequest): GetOnlyMethodRequest_Original {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.id !== undefined && message.id !== null && (obj.id = message.id);
     return obj;
   },
   toJSON(message: GetOnlyMethodRequest): unknown {
@@ -685,7 +685,7 @@ export const GetOnlyMethodResponse = {
   },
   toWrapped(message: GetOnlyMethodResponse): GetOnlyMethodResponse_Original {
     const obj: any = {};
-    message.entity !== undefined && (obj.entity = message.entity ? Entity.toWrapped(message.entity) : undefined);
+    message.entity !== undefined && message.entity !== null && (obj.entity = message.entity ? Entity.toWrapped(message.entity) : undefined);
     return obj;
   },
   toJSON(message: GetOnlyMethodResponse): unknown {
@@ -746,7 +746,7 @@ export const WriteMethodRequest = {
   },
   toWrapped(message: WriteMethodRequest): WriteMethodRequest_Original {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.id !== undefined && message.id !== null && (obj.id = message.id);
     return obj;
   },
   toJSON(message: WriteMethodRequest): unknown {
@@ -866,8 +866,8 @@ export const Entity = {
   },
   toWrapped(message: Entity): Entity_Original {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
-    message.name !== undefined && (obj.name = message.name);
+    message.id !== undefined && message.id !== null && (obj.id = message.id);
+    message.name !== undefined && message.name !== null && (obj.name = message.name);
     return obj;
   },
   toJSON(message: Entity): unknown {

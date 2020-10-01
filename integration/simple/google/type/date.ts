@@ -158,9 +158,9 @@ export const DateMessage = {
   },
   toWrapped(message: DateMessage): DateMessage_Original {
     const obj: any = {};
-    message.year !== undefined && (obj.year = message.year);
-    message.month !== undefined && (obj.month = message.month);
-    message.day !== undefined && (obj.day = message.day);
+    message.year !== undefined && message.year !== null && (obj.year = message.year);
+    message.month !== undefined && message.month !== null && (obj.month = message.month);
+    message.day !== undefined && message.day !== null && (obj.day = message.day);
     return obj;
   },
   toJSON(message: DateMessage): unknown {

@@ -38,7 +38,7 @@ export const Message = {
   },
   toWrapped(message: Message): Message_Original {
     const obj: any = {};
-    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    message.data !== undefined && message.data !== null && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
     return obj;
   },
   toJSON(message: Message): unknown {

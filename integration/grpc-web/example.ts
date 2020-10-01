@@ -336,8 +336,8 @@ export const DashFlash = {
   },
   toWrapped(message: DashFlash): DashFlash_Original {
     const obj: any = {};
-    message.msg !== undefined && (obj.msg = message.msg);
-    message.type !== undefined && (obj.type = dashFlash_TypeFromJSON(message.type));
+    message.msg !== undefined && message.msg !== null && (obj.msg = message.msg);
+    message.type !== undefined && message.type !== null && (obj.type = dashFlash_TypeFromJSON(message.type));
     return obj;
   },
   toJSON(message: DashFlash): unknown {
@@ -445,8 +445,8 @@ export const DashUserSettingsState = {
   },
   toWrapped(message: DashUserSettingsState): DashUserSettingsState_Original {
     const obj: any = {};
-    message.email !== undefined && (obj.email = message.email);
-    message.urls !== undefined && (obj.urls = message.urls ? DashUserSettingsState_URLs.toWrapped(message.urls) : undefined);
+    message.email !== undefined && message.email !== null && (obj.email = message.email);
+    message.urls !== undefined && message.urls !== null && (obj.urls = message.urls ? DashUserSettingsState_URLs.toWrapped(message.urls) : undefined);
     if (message.flashes) {
       obj.flashes = message.flashes.map(e => e ? DashFlash.toWrapped(e) : undefined);
     } else {
@@ -537,8 +537,8 @@ export const DashUserSettingsState_URLs = {
   },
   toWrapped(message: DashUserSettingsState_URLs): DashUserSettingsState_URLs_Original {
     const obj: any = {};
-    message.connectGoogle !== undefined && (obj.connectGoogle = message.connectGoogle);
-    message.connectGithub !== undefined && (obj.connectGithub = message.connectGithub);
+    message.connectGoogle !== undefined && message.connectGoogle !== null && (obj.connectGoogle = message.connectGoogle);
+    message.connectGithub !== undefined && message.connectGithub !== null && (obj.connectGithub = message.connectGithub);
     return obj;
   },
   toJSON(message: DashUserSettingsState_URLs): unknown {
@@ -659,10 +659,10 @@ export const DashCred = {
   },
   toWrapped(message: DashCred): DashCred_Original {
     const obj: any = {};
-    message.description !== undefined && (obj.description = message.description);
-    message.metadata !== undefined && (obj.metadata = message.metadata);
-    message.token !== undefined && (obj.token = message.token);
-    message.id !== undefined && (obj.id = message.id ? ID.toWrapped(message.id) : undefined);
+    message.description !== undefined && message.description !== null && (obj.description = message.description);
+    message.metadata !== undefined && message.metadata !== null && (obj.metadata = message.metadata);
+    message.token !== undefined && message.token !== null && (obj.token = message.token);
+    message.id !== undefined && message.id !== null && (obj.id = message.id ? ID.toWrapped(message.id) : undefined);
     return obj;
   },
   toJSON(message: DashCred): unknown {
@@ -745,8 +745,8 @@ export const DashAPICredsCreateReq = {
   },
   toWrapped(message: DashAPICredsCreateReq): DashAPICredsCreateReq_Original {
     const obj: any = {};
-    message.description !== undefined && (obj.description = message.description);
-    message.metadata !== undefined && (obj.metadata = message.metadata);
+    message.description !== undefined && message.description !== null && (obj.description = message.description);
+    message.metadata !== undefined && message.metadata !== null && (obj.metadata = message.metadata);
     return obj;
   },
   toJSON(message: DashAPICredsCreateReq): unknown {
@@ -867,10 +867,10 @@ export const DashAPICredsUpdateReq = {
   },
   toWrapped(message: DashAPICredsUpdateReq): DashAPICredsUpdateReq_Original {
     const obj: any = {};
-    message.credSid !== undefined && (obj.credSid = message.credSid);
-    message.description !== undefined && (obj.description = message.description);
-    message.metadata !== undefined && (obj.metadata = message.metadata);
-    message.id !== undefined && (obj.id = message.id ? ID.toWrapped(message.id) : undefined);
+    message.credSid !== undefined && message.credSid !== null && (obj.credSid = message.credSid);
+    message.description !== undefined && message.description !== null && (obj.description = message.description);
+    message.metadata !== undefined && message.metadata !== null && (obj.metadata = message.metadata);
+    message.id !== undefined && message.id !== null && (obj.id = message.id ? ID.toWrapped(message.id) : undefined);
     return obj;
   },
   toJSON(message: DashAPICredsUpdateReq): unknown {
@@ -955,8 +955,8 @@ export const DashAPICredsDeleteReq = {
   },
   toWrapped(message: DashAPICredsDeleteReq): DashAPICredsDeleteReq_Original {
     const obj: any = {};
-    message.credSid !== undefined && (obj.credSid = message.credSid);
-    message.id !== undefined && (obj.id = message.id ? ID.toWrapped(message.id) : undefined);
+    message.credSid !== undefined && message.credSid !== null && (obj.credSid = message.credSid);
+    message.id !== undefined && message.id !== null && (obj.id = message.id ? ID.toWrapped(message.id) : undefined);
     return obj;
   },
   toJSON(message: DashAPICredsDeleteReq): unknown {

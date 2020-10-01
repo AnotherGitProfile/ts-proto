@@ -64,7 +64,7 @@ export const SimpleMessage = {
   },
   toWrapped(message: SimpleMessage): SimpleMessage_Original {
     const obj: any = {};
-    message.numberField !== undefined && (obj.numberField = message.numberField);
+    message.numberField !== undefined && message.numberField !== null && (obj.numberField = message.numberField);
     return obj;
   },
   toJSON(message: SimpleMessage): unknown {

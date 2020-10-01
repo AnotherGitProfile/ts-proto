@@ -311,7 +311,7 @@ export const DoubleValue = {
   },
   toWrapped(message: DoubleValue): DoubleValue_Original {
     const obj: any = {};
-    message.value !== undefined && (obj.value = message.value);
+    message.value !== undefined && message.value !== null && (obj.value = message.value);
     return obj;
   },
   toJSON(message: DoubleValue): unknown {
@@ -372,7 +372,7 @@ export const FloatValue = {
   },
   toWrapped(message: FloatValue): FloatValue_Original {
     const obj: any = {};
-    message.value !== undefined && (obj.value = message.value);
+    message.value !== undefined && message.value !== null && (obj.value = message.value);
     return obj;
   },
   toJSON(message: FloatValue): unknown {
@@ -433,7 +433,7 @@ export const Int64Value = {
   },
   toWrapped(message: Int64Value): Int64Value_Original {
     const obj: any = {};
-    message.value !== undefined && (obj.value = message.value);
+    message.value !== undefined && message.value !== null && (obj.value = message.value);
     return obj;
   },
   toJSON(message: Int64Value): unknown {
@@ -494,7 +494,7 @@ export const UInt64Value = {
   },
   toWrapped(message: UInt64Value): UInt64Value_Original {
     const obj: any = {};
-    message.value !== undefined && (obj.value = message.value);
+    message.value !== undefined && message.value !== null && (obj.value = message.value);
     return obj;
   },
   toJSON(message: UInt64Value): unknown {
@@ -555,7 +555,7 @@ export const Int32Value = {
   },
   toWrapped(message: Int32Value): Int32Value_Original {
     const obj: any = {};
-    message.value !== undefined && (obj.value = message.value);
+    message.value !== undefined && message.value !== null && (obj.value = message.value);
     return obj;
   },
   toJSON(message: Int32Value): unknown {
@@ -616,7 +616,7 @@ export const UInt32Value = {
   },
   toWrapped(message: UInt32Value): UInt32Value_Original {
     const obj: any = {};
-    message.value !== undefined && (obj.value = message.value);
+    message.value !== undefined && message.value !== null && (obj.value = message.value);
     return obj;
   },
   toJSON(message: UInt32Value): unknown {
@@ -677,7 +677,7 @@ export const BoolValue = {
   },
   toWrapped(message: BoolValue): BoolValue_Original {
     const obj: any = {};
-    message.value !== undefined && (obj.value = message.value);
+    message.value !== undefined && message.value !== null && (obj.value = message.value);
     return obj;
   },
   toJSON(message: BoolValue): unknown {
@@ -738,7 +738,7 @@ export const StringValue = {
   },
   toWrapped(message: StringValue): StringValue_Original {
     const obj: any = {};
-    message.value !== undefined && (obj.value = message.value);
+    message.value !== undefined && message.value !== null && (obj.value = message.value);
     return obj;
   },
   toJSON(message: StringValue): unknown {
@@ -797,7 +797,7 @@ export const BytesValue = {
   },
   toWrapped(message: BytesValue): BytesValue_Original {
     const obj: any = {};
-    message.value !== undefined && (obj.value = base64FromBytes(message.value !== undefined ? message.value : new Uint8Array()));
+    message.value !== undefined && message.value !== null && (obj.value = base64FromBytes(message.value !== undefined ? message.value : new Uint8Array()));
     return obj;
   },
   toJSON(message: BytesValue): unknown {

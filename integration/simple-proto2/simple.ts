@@ -96,7 +96,7 @@ export const Issue56 = {
   },
   toWrapped(message: Issue56): Issue56_Original {
     const obj: any = {};
-    message.test !== undefined && (obj.test = enumWithoutZeroFromJSON(message.test));
+    message.test !== undefined && message.test !== null && (obj.test = enumWithoutZeroFromJSON(message.test));
     return obj;
   },
   toJSON(message: Issue56): unknown {

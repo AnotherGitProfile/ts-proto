@@ -222,8 +222,8 @@ export const Timestamp = {
   },
   toWrapped(message: Timestamp): Timestamp_Original {
     const obj: any = {};
-    message.seconds !== undefined && (obj.seconds = message.seconds);
-    message.nanos !== undefined && (obj.nanos = message.nanos);
+    message.seconds !== undefined && message.seconds !== null && (obj.seconds = message.seconds);
+    message.nanos !== undefined && message.nanos !== null && (obj.nanos = message.nanos);
     return obj;
   },
   toJSON(message: Timestamp): unknown {
@@ -285,7 +285,7 @@ export const Duration = {
   },
   toWrapped(message: Duration): Duration_Original {
     const obj: any = {};
-    message.nanos !== undefined && (obj.nanos = message.nanos);
+    message.nanos !== undefined && message.nanos !== null && (obj.nanos = message.nanos);
     return obj;
   },
   toJSON(message: Duration): unknown {
@@ -386,7 +386,7 @@ export const OptString = {
   },
   toWrapped(message: OptString): OptString_Original {
     const obj: any = {};
-    message.val !== undefined && (obj.val = message.val);
+    message.val !== undefined && message.val !== null && (obj.val = message.val);
     return obj;
   },
   toJSON(message: OptString): unknown {
@@ -447,7 +447,7 @@ export const OptInt64 = {
   },
   toWrapped(message: OptInt64): OptInt64_Original {
     const obj: any = {};
-    message.val !== undefined && (obj.val = message.val);
+    message.val !== undefined && message.val !== null && (obj.val = message.val);
     return obj;
   },
   toJSON(message: OptInt64): unknown {
@@ -508,7 +508,7 @@ export const OptBool = {
   },
   toWrapped(message: OptBool): OptBool_Original {
     const obj: any = {};
-    message.val !== undefined && (obj.val = message.val);
+    message.val !== undefined && message.val !== null && (obj.val = message.val);
     return obj;
   },
   toJSON(message: OptBool): unknown {
@@ -584,8 +584,8 @@ export const IPNet = {
   },
   toWrapped(message: IPNet): IPNet_Original {
     const obj: any = {};
-    message.ip !== undefined && (obj.ip = base64FromBytes(message.ip !== undefined ? message.ip : new Uint8Array()));
-    message.mask !== undefined && (obj.mask = base64FromBytes(message.mask !== undefined ? message.mask : new Uint8Array()));
+    message.ip !== undefined && message.ip !== null && (obj.ip = base64FromBytes(message.ip !== undefined ? message.ip : new Uint8Array()));
+    message.mask !== undefined && message.mask !== null && (obj.mask = base64FromBytes(message.mask !== undefined ? message.mask : new Uint8Array()));
     return obj;
   },
   toJSON(message: IPNet): unknown {
@@ -647,7 +647,7 @@ export const ID = {
   },
   toWrapped(message: ID): ID_Original {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.id !== undefined && message.id !== null && (obj.id = message.id);
     return obj;
   },
   toJSON(message: ID): unknown {

@@ -74,7 +74,7 @@ export const Baz = {
   },
   toWrapped(message: Baz): Baz_Original {
     const obj: any = {};
-    message.foo !== undefined && (obj.foo = message.foo ? FooBar.toWrapped(message.foo) : undefined);
+    message.foo !== undefined && message.foo !== null && (obj.foo = message.foo ? FooBar.toWrapped(message.foo) : undefined);
     return obj;
   },
   toJSON(message: Baz): unknown {

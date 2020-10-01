@@ -957,11 +957,11 @@ export const Simple = {
   },
   toWrapped(message: Simple): Simple_Original {
     const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.age !== undefined && (obj.age = message.age);
-    message.createdAt !== undefined && (obj.createdAt = message.createdAt !== undefined && message.createdAt !== null ? toTimestamp(message.createdAt) : null);
-    message.child !== undefined && (obj.child = message.child ? Child.toWrapped(message.child) : undefined);
-    message.state !== undefined && (obj.state = stateEnumFromJSON(message.state));
+    message.name !== undefined && message.name !== null && (obj.name = message.name);
+    message.age !== undefined && message.age !== null && (obj.age = message.age);
+    message.createdAt !== undefined && message.createdAt !== null && (obj.createdAt = toTimestamp(message.createdAt));
+    message.child !== undefined && message.child !== null && (obj.child = message.child ? Child.toWrapped(message.child) : undefined);
+    message.state !== undefined && message.state !== null && (obj.state = stateEnumFromJSON(message.state));
     if (message.grandChildren) {
       obj.grandChildren = message.grandChildren.map(e => e ? Child.toWrapped(e) : undefined);
     } else {
@@ -982,14 +982,14 @@ export const Simple = {
     } else {
       obj.oldStates = [];
     }
-    message.thing !== undefined && (obj.thing = message.thing ? ImportedThing.toWrapped(message.thing) : undefined);
+    message.thing !== undefined && message.thing !== null && (obj.thing = message.thing ? ImportedThing.toWrapped(message.thing) : undefined);
     if (message.blobs) {
       obj.blobs = message.blobs.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
     } else {
       obj.blobs = [];
     }
-    message.birthday !== undefined && (obj.birthday = message.birthday ? DateMessage.toWrapped(message.birthday) : undefined);
-    message.blob !== undefined && (obj.blob = base64FromBytes(message.blob !== undefined ? message.blob : new Uint8Array()));
+    message.birthday !== undefined && message.birthday !== null && (obj.birthday = message.birthday ? DateMessage.toWrapped(message.birthday) : undefined);
+    message.blob !== undefined && message.blob !== null && (obj.blob = base64FromBytes(message.blob !== undefined ? message.blob : new Uint8Array()));
     return obj;
   },
   toJSON(message: Simple): unknown {
@@ -1101,8 +1101,8 @@ export const Child = {
   },
   toWrapped(message: Child): Child_Original {
     const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.type !== undefined && (obj.type = child_TypeFromJSON(message.type));
+    message.name !== undefined && message.name !== null && (obj.name = message.name);
+    message.type !== undefined && message.type !== null && (obj.type = child_TypeFromJSON(message.type));
     return obj;
   },
   toJSON(message: Child): unknown {
@@ -1204,9 +1204,9 @@ export const Nested = {
   },
   toWrapped(message: Nested): Nested_Original {
     const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.message !== undefined && (obj.message = message.message ? Nested_InnerMessage.toWrapped(message.message) : undefined);
-    message.state !== undefined && (obj.state = nested_InnerEnumFromJSON(message.state));
+    message.name !== undefined && message.name !== null && (obj.name = message.name);
+    message.message !== undefined && message.message !== null && (obj.message = message.message ? Nested_InnerMessage.toWrapped(message.message) : undefined);
+    message.state !== undefined && message.state !== null && (obj.state = nested_InnerEnumFromJSON(message.state));
     return obj;
   },
   toJSON(message: Nested): unknown {
@@ -1290,8 +1290,8 @@ export const Nested_InnerMessage = {
   },
   toWrapped(message: Nested_InnerMessage): Nested_InnerMessage_Original {
     const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.deep !== undefined && (obj.deep = message.deep ? Nested_InnerMessage_DeepMessage.toWrapped(message.deep) : undefined);
+    message.name !== undefined && message.name !== null && (obj.name = message.name);
+    message.deep !== undefined && message.deep !== null && (obj.deep = message.deep ? Nested_InnerMessage_DeepMessage.toWrapped(message.deep) : undefined);
     return obj;
   },
   toJSON(message: Nested_InnerMessage): unknown {
@@ -1353,7 +1353,7 @@ export const Nested_InnerMessage_DeepMessage = {
   },
   toWrapped(message: Nested_InnerMessage_DeepMessage): Nested_InnerMessage_DeepMessage_Original {
     const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
+    message.name !== undefined && message.name !== null && (obj.name = message.name);
     return obj;
   },
   toJSON(message: Nested_InnerMessage_DeepMessage): unknown {
@@ -1437,8 +1437,8 @@ export const OneOfMessage = {
   },
   toWrapped(message: OneOfMessage): OneOfMessage_Original {
     const obj: any = {};
-    message.first !== undefined && (obj.first = message.first);
-    message.last !== undefined && (obj.last = message.last);
+    message.first !== undefined && message.first !== null && (obj.first = message.first);
+    message.last !== undefined && message.last !== null && (obj.last = message.last);
     return obj;
   },
   toJSON(message: OneOfMessage): unknown {
@@ -1594,9 +1594,9 @@ export const SimpleWithWrappers = {
   },
   toWrapped(message: SimpleWithWrappers): SimpleWithWrappers_Original {
     const obj: any = {};
-    message.name !== undefined && (obj.name = ({ value: message.name }));
-    message.age !== undefined && (obj.age = ({ value: message.age }));
-    message.enabled !== undefined && (obj.enabled = ({ value: message.enabled }));
+    message.name !== undefined && message.name !== null && (obj.name = ({ value: message.name }));
+    message.age !== undefined && message.age !== null && (obj.age = ({ value: message.age }));
+    message.enabled !== undefined && message.enabled !== null && (obj.enabled = ({ value: message.enabled }));
     if (message.coins) {
       obj.coins = message.coins.map(e => ({ value: e }));
     } else {
@@ -1679,7 +1679,7 @@ export const Entity = {
   },
   toWrapped(message: Entity): Entity_Original {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.id !== undefined && message.id !== null && (obj.id = message.id);
     return obj;
   },
   toJSON(message: Entity): unknown {
@@ -2021,8 +2021,8 @@ export const SimpleWithMap_EntitiesByIdEntry = {
   },
   toWrapped(message: SimpleWithMap_EntitiesByIdEntry): SimpleWithMap_EntitiesByIdEntry_Original {
     const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value ? Entity.toWrapped(message.value) : undefined);
+    message.key !== undefined && message.key !== null && (obj.key = message.key);
+    message.value !== undefined && message.value !== null && (obj.value = message.value ? Entity.toWrapped(message.value) : undefined);
     return obj;
   },
   toJSON(message: SimpleWithMap_EntitiesByIdEntry): unknown {
@@ -2103,8 +2103,8 @@ export const SimpleWithMap_NameLookupEntry = {
   },
   toWrapped(message: SimpleWithMap_NameLookupEntry): SimpleWithMap_NameLookupEntry_Original {
     const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value);
+    message.key !== undefined && message.key !== null && (obj.key = message.key);
+    message.value !== undefined && message.value !== null && (obj.value = message.value);
     return obj;
   },
   toJSON(message: SimpleWithMap_NameLookupEntry): unknown {
@@ -2185,8 +2185,8 @@ export const SimpleWithMap_IntLookupEntry = {
   },
   toWrapped(message: SimpleWithMap_IntLookupEntry): SimpleWithMap_IntLookupEntry_Original {
     const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value);
+    message.key !== undefined && message.key !== null && (obj.key = message.key);
+    message.value !== undefined && message.value !== null && (obj.value = message.value);
     return obj;
   },
   toJSON(message: SimpleWithMap_IntLookupEntry): unknown {
@@ -2269,8 +2269,8 @@ export const SimpleWithMap_MapOfTimestampsEntry = {
   },
   toWrapped(message: SimpleWithMap_MapOfTimestampsEntry): SimpleWithMap_MapOfTimestampsEntry_Original {
     const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value !== undefined && message.value !== null ? toTimestamp(message.value) : null);
+    message.key !== undefined && message.key !== null && (obj.key = message.key);
+    message.value !== undefined && message.value !== null && (obj.value = toTimestamp(message.value));
     return obj;
   },
   toJSON(message: SimpleWithMap_MapOfTimestampsEntry): unknown {
@@ -2349,8 +2349,8 @@ export const SimpleWithMap_MapOfBytesEntry = {
   },
   toWrapped(message: SimpleWithMap_MapOfBytesEntry): SimpleWithMap_MapOfBytesEntry_Original {
     const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = base64FromBytes(message.value !== undefined ? message.value : new Uint8Array()));
+    message.key !== undefined && message.key !== null && (obj.key = message.key);
+    message.value !== undefined && message.value !== null && (obj.value = base64FromBytes(message.value !== undefined ? message.value : new Uint8Array()));
     return obj;
   },
   toJSON(message: SimpleWithMap_MapOfBytesEntry): unknown {
@@ -2517,8 +2517,8 @@ export const SimpleWithSnakeCaseMap_EntitiesByIdEntry = {
   },
   toWrapped(message: SimpleWithSnakeCaseMap_EntitiesByIdEntry): SimpleWithSnakeCaseMap_EntitiesByIdEntry_Original {
     const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value ? Entity.toWrapped(message.value) : undefined);
+    message.key !== undefined && message.key !== null && (obj.key = message.key);
+    message.value !== undefined && message.value !== null && (obj.value = message.value ? Entity.toWrapped(message.value) : undefined);
     return obj;
   },
   toJSON(message: SimpleWithSnakeCaseMap_EntitiesByIdEntry): unknown {
@@ -2683,8 +2683,8 @@ export const SimpleWithMapOfEnums_EnumsByIdEntry = {
   },
   toWrapped(message: SimpleWithMapOfEnums_EnumsByIdEntry): SimpleWithMapOfEnums_EnumsByIdEntry_Original {
     const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = stateEnumFromJSON(message.value));
+    message.key !== undefined && message.key !== null && (obj.key = message.key);
+    message.value !== undefined && message.value !== null && (obj.value = stateEnumFromJSON(message.value));
     return obj;
   },
   toJSON(message: SimpleWithMapOfEnums_EnumsByIdEntry): unknown {
@@ -2746,7 +2746,7 @@ export const PingRequest = {
   },
   toWrapped(message: PingRequest): PingRequest_Original {
     const obj: any = {};
-    message.input !== undefined && (obj.input = message.input);
+    message.input !== undefined && message.input !== null && (obj.input = message.input);
     return obj;
   },
   toJSON(message: PingRequest): unknown {
@@ -2807,7 +2807,7 @@ export const PingResponse = {
   },
   toWrapped(message: PingResponse): PingResponse_Original {
     const obj: any = {};
-    message.output !== undefined && (obj.output = message.output);
+    message.output !== undefined && message.output !== null && (obj.output = message.output);
     return obj;
   },
   toJSON(message: PingResponse): unknown {
@@ -3077,18 +3077,18 @@ export const Numbers = {
   },
   toWrapped(message: Numbers): Numbers_Original {
     const obj: any = {};
-    message.double !== undefined && (obj.double = message.double);
-    message.float !== undefined && (obj.float = message.float);
-    message.int32 !== undefined && (obj.int32 = message.int32);
-    message.int64 !== undefined && (obj.int64 = message.int64);
-    message.uint32 !== undefined && (obj.uint32 = message.uint32);
-    message.uint64 !== undefined && (obj.uint64 = message.uint64);
-    message.sint32 !== undefined && (obj.sint32 = message.sint32);
-    message.sint64 !== undefined && (obj.sint64 = message.sint64);
-    message.fixed32 !== undefined && (obj.fixed32 = message.fixed32);
-    message.fixed64 !== undefined && (obj.fixed64 = message.fixed64);
-    message.sfixed32 !== undefined && (obj.sfixed32 = message.sfixed32);
-    message.sfixed64 !== undefined && (obj.sfixed64 = message.sfixed64);
+    message.double !== undefined && message.double !== null && (obj.double = message.double);
+    message.float !== undefined && message.float !== null && (obj.float = message.float);
+    message.int32 !== undefined && message.int32 !== null && (obj.int32 = message.int32);
+    message.int64 !== undefined && message.int64 !== null && (obj.int64 = message.int64);
+    message.uint32 !== undefined && message.uint32 !== null && (obj.uint32 = message.uint32);
+    message.uint64 !== undefined && message.uint64 !== null && (obj.uint64 = message.uint64);
+    message.sint32 !== undefined && message.sint32 !== null && (obj.sint32 = message.sint32);
+    message.sint64 !== undefined && message.sint64 !== null && (obj.sint64 = message.sint64);
+    message.fixed32 !== undefined && message.fixed32 !== null && (obj.fixed32 = message.fixed32);
+    message.fixed64 !== undefined && message.fixed64 !== null && (obj.fixed64 = message.fixed64);
+    message.sfixed32 !== undefined && message.sfixed32 !== null && (obj.sfixed32 = message.sfixed32);
+    message.sfixed64 !== undefined && message.sfixed64 !== null && (obj.sfixed64 = message.sfixed64);
     return obj;
   },
   toJSON(message: Numbers): unknown {
@@ -3288,13 +3288,13 @@ export const SimpleButOptional = {
   },
   toWrapped(message: SimpleButOptional): SimpleButOptional_Original {
     const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.age !== undefined && (obj.age = message.age);
-    message.createdAt !== undefined && (obj.createdAt = message.createdAt !== undefined && message.createdAt !== null ? toTimestamp(message.createdAt) : null);
-    message.child !== undefined && (obj.child = message.child ? Child.toWrapped(message.child) : undefined);
-    message.state !== undefined && (obj.state = message.state !== undefined && message.state !== null ? stateEnumFromJSON(message.state) : undefined);
-    message.thing !== undefined && (obj.thing = message.thing ? ImportedThing.toWrapped(message.thing) : undefined);
-    message.birthday !== undefined && (obj.birthday = message.birthday ? DateMessage.toWrapped(message.birthday) : undefined);
+    message.name !== undefined && message.name !== null && (obj.name = message.name);
+    message.age !== undefined && message.age !== null && (obj.age = message.age);
+    message.createdAt !== undefined && message.createdAt !== null && (obj.createdAt = toTimestamp(message.createdAt));
+    message.child !== undefined && message.child !== null && (obj.child = message.child ? Child.toWrapped(message.child) : undefined);
+    message.state !== undefined && message.state !== null && (obj.state = message.state !== undefined && message.state !== null ? stateEnumFromJSON(message.state) : undefined);
+    message.thing !== undefined && message.thing !== null && (obj.thing = message.thing ? ImportedThing.toWrapped(message.thing) : undefined);
+    message.birthday !== undefined && message.birthday !== null && (obj.birthday = message.birthday ? DateMessage.toWrapped(message.birthday) : undefined);
     return obj;
   },
   toJSON(message: SimpleButOptional): unknown {
