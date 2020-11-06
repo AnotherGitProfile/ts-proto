@@ -856,7 +856,8 @@ function generateEncode(
     } else if (isMessage(field)) {
       func = func
         .beginControlFlow(
-          'if (message.%L !== undefined && message.%L !== %L)',
+          'if (message.%L !== undefined && message.%L !== null && message.%L !== %L)',
+          fieldName,
           fieldName,
           fieldName,
           defaultValue(typeMap, field, options)

@@ -351,7 +351,7 @@ export const DashFlash = {
 export const DashUserSettingsState = {
   encode(message: DashUserSettingsState, writer: Writer = Writer.create()): Writer {
     writer.uint32(10).string(message.email);
-    if (message.urls !== undefined && message.urls !== undefined) {
+    if (message.urls !== undefined && message.urls !== null && message.urls !== undefined) {
       DashUserSettingsState_URLs.encode(message.urls, writer.uint32(50).fork()).ldelim();
     }
     for (const v of message.flashes) {
@@ -554,7 +554,7 @@ export const DashCred = {
     writer.uint32(18).string(message.description);
     writer.uint32(26).string(message.metadata);
     writer.uint32(34).string(message.token);
-    if (message.id !== undefined && message.id !== undefined) {
+    if (message.id !== undefined && message.id !== null && message.id !== undefined) {
       ID.encode(message.id, writer.uint32(58).fork()).ldelim();
     }
     return writer;
@@ -762,7 +762,7 @@ export const DashAPICredsUpdateReq = {
     writer.uint32(10).string(message.credSid);
     writer.uint32(18).string(message.description);
     writer.uint32(26).string(message.metadata);
-    if (message.id !== undefined && message.id !== undefined) {
+    if (message.id !== undefined && message.id !== null && message.id !== undefined) {
       ID.encode(message.id, writer.uint32(42).fork()).ldelim();
     }
     return writer;
@@ -886,7 +886,7 @@ export const DashAPICredsUpdateReq = {
 export const DashAPICredsDeleteReq = {
   encode(message: DashAPICredsDeleteReq, writer: Writer = Writer.create()): Writer {
     writer.uint32(10).string(message.credSid);
-    if (message.id !== undefined && message.id !== undefined) {
+    if (message.id !== undefined && message.id !== null && message.id !== undefined) {
       ID.encode(message.id, writer.uint32(26).fork()).ldelim();
     }
     return writer;

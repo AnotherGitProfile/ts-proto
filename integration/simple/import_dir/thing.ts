@@ -37,7 +37,7 @@ function fromTimestamp(t: Timestamp): Date {
 
 export const ImportedThing = {
   encode(message: ImportedThing, writer: Writer = Writer.create()): Writer {
-    if (message.createdAt !== undefined && message.createdAt !== undefined) {
+    if (message.createdAt !== undefined && message.createdAt !== null && message.createdAt !== undefined) {
       Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(10).fork()).ldelim();
     }
     return writer;

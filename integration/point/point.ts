@@ -113,10 +113,10 @@ export const Point = {
 
 export const Area = {
   encode(message: Area, writer: Writer = Writer.create()): Writer {
-    if (message.nw !== undefined && message.nw !== undefined) {
+    if (message.nw !== undefined && message.nw !== null && message.nw !== undefined) {
       Point.encode(message.nw, writer.uint32(10).fork()).ldelim();
     }
-    if (message.se !== undefined && message.se !== undefined) {
+    if (message.se !== undefined && message.se !== null && message.se !== undefined) {
       Point.encode(message.se, writer.uint32(18).fork()).ldelim();
     }
     return writer;

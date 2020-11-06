@@ -47,7 +47,7 @@ describe('simple value types', () => {
     `);
   });
 
-  it('can encode null value wrappers as proto', () => {
+  it('can encode undefined value wrappers as proto', () => {
     const s1: SimpleWithWrappers = {
       name: undefined,
       age: undefined,
@@ -55,6 +55,19 @@ describe('simple value types', () => {
       coins: [], // should be undefined
       snacks: [],
     };
+    const s2 = PbSimpleWithWrappers.decode(Reader.create(SimpleWithWrappers.encode(s1).finish()));
+    // pbjs toJSON still uses the wrapper objects, so we can't compare directly against s1
+    expect(s2).toMatchInlineSnapshot(`Object {}`);
+  });
+
+  it('can encode null value wrappers', () => {
+    const s1: SimpleWithWrappers = ({
+      name: null,
+      age: null,
+      enabled: null,
+      coins: [], // should be undefined
+      snacks: [],
+    } as unknown) as SimpleWithWrappers;
     const s2 = PbSimpleWithWrappers.decode(Reader.create(SimpleWithWrappers.encode(s1).finish()));
     // pbjs toJSON still uses the wrapper objects, so we can't compare directly against s1
     expect(s2).toMatchInlineSnapshot(`Object {}`);
