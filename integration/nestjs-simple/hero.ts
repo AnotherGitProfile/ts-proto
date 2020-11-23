@@ -1,3 +1,4 @@
+import { Timestamp, Timestamp_Original } from './google/protobuf/timestamp';
 import { Observable } from 'rxjs';
 import { Empty } from './google/protobuf/empty';
 import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
@@ -22,11 +23,13 @@ export interface VillainById_Original {
 export interface Hero {
   id: number;
   name: string;
+  birthDate: Timestamp | undefined;
 }
 
 export interface Hero_Original {
   id: number;
   name: string;
+  birthDate: Timestamp_Original | undefined;
 }
 
 export interface Villain {
@@ -85,6 +88,8 @@ export function HeroServiceControllerMethods() {
     }
   }
 }
+
+export const protobufPackage = 'hero'
 
 export const HERO_PACKAGE_NAME = 'hero'
 export const HERO_SERVICE_NAME = 'HeroService';

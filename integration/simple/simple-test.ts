@@ -1,5 +1,6 @@
 import { Reader } from 'protobufjs';
 import {
+  protobufPackage,
   Child_Type,
   Nested,
   Nested_InnerEnum,
@@ -47,6 +48,10 @@ describe('simple', () => {
       birthday: undefined,
     };
     expect(simple.name).toEqual('asdf');
+  });
+
+  it('generates its protobuf package constant', () => {
+    expect(protobufPackage).toEqual('simple');
   });
 
   it('can decode', () => {

@@ -13,6 +13,8 @@ const baseIssue56: object = {
   test: 1,
 };
 
+export const protobufPackage = 'simple'
+
 export enum EnumWithoutZero {
   A = 1,
   B = 2,
@@ -107,7 +109,7 @@ export const Issue56 = {
 };
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
-type DeepPartial<T> = T extends Builtin
+export type DeepPartial<T> = T extends Builtin
   ? T
   : T extends Array<infer U>
   ? Array<DeepPartial<U>>

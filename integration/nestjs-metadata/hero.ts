@@ -74,5 +74,7 @@ export function HeroServiceControllerMethods() {
   }
 }
 
+export const protobufPackage = 'hero'
+
 export const HERO_PACKAGE_NAME = 'hero'
 export const HERO_SERVICE_NAME = 'HeroService';

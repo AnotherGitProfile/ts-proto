@@ -3,8 +3,8 @@
 //
 import { ImportedThing, ImportedThing_Original } from './import_dir/thing';
 import { Timestamp_Original, Timestamp } from './google/protobuf/timestamp';
-import { StringValue_Original, Int32Value_Original, BoolValue_Original, StringValue, Int32Value, BoolValue } from './google/protobuf/wrappers';
 import * as Long from 'long';
+import { StringValue_Original, Int32Value_Original, BoolValue_Original, Int64Value_Original, StringValue, Int32Value, BoolValue, Int64Value } from './google/protobuf/wrappers';
 import { Reader, Writer, util, configure } from 'protobufjs/minimal';
 
 
@@ -120,6 +120,7 @@ export interface SimpleWithWrappers {
   name: string | undefined;
   age: number | undefined;
   enabled: boolean | undefined;
+  bananas: Long | undefined;
   coins: number[];
   snacks: string[];
 }
@@ -128,6 +129,7 @@ export interface SimpleWithWrappers_Original {
   name: StringValue_Original;
   age: Int32Value_Original;
   enabled: BoolValue_Original;
+  bananas: Int64Value_Original;
   coins: Int32Value_Original[];
   snacks: StringValue_Original[];
 }
@@ -383,6 +385,8 @@ function fromTimestamp(t: Timestamp): Date {
 function numberToLong(number: number) {
   return Long.fromNumber(number);
 }
+
+export const protobufPackage = 'simple'
 
 export enum StateEnum {
   UNKNOWN = 0,
@@ -1257,6 +1261,9 @@ export const SimpleWithWrappers = {
     if (message.enabled !== undefined && message.enabled !== null && message.enabled !== undefined) {
       BoolValue.encode({ value: message.enabled! }, writer.uint32(26).fork()).ldelim();
     }
+    if (message.bananas !== undefined && message.bananas !== null && message.bananas !== undefined) {
+      Int64Value.encode({ value: message.bananas! }, writer.uint32(34).fork()).ldelim();
+    }
     for (const v of message.coins) {
       Int32Value.encode({ value: v!! }, writer.uint32(50).fork()).ldelim();
     }
@@ -1282,6 +1289,9 @@ export const SimpleWithWrappers = {
           break;
         case 3:
           message.enabled = BoolValue.decode(reader, reader.uint32()).value;
+          break;
+        case 4:
+          message.bananas = Int64Value.decode(reader, reader.uint32()).value;
           break;
         case 6:
           message.coins.push(Int32Value.decode(reader, reader.uint32()).value);
@@ -1315,6 +1325,11 @@ export const SimpleWithWrappers = {
     } else {
       message.enabled = undefined;
     }
+    if (object.bananas !== undefined && object.bananas !== null) {
+      message.bananas = Long.fromValue(object.bananas);
+    } else {
+      message.bananas = undefined;
+    }
     if (object.coins !== undefined && object.coins !== null) {
       for (const e of object.coins) {
         message.coins.push(Number(e));
@@ -1345,6 +1360,11 @@ export const SimpleWithWrappers = {
       message.enabled = object.enabled;
     } else {
       message.enabled = undefined;
+    }
+    if (object.bananas !== undefined && object.bananas !== null) {
+      message.bananas = object.bananas as Long | undefined;
+    } else {
+      message.bananas = undefined;
     }
     if (object.coins !== undefined && object.coins !== null) {
       for (const e of object.coins) {
@@ -1377,6 +1397,11 @@ export const SimpleWithWrappers = {
     } else {
       message.enabled = undefined;
     }
+    if (object.bananas !== undefined && object.bananas !== null) {
+      message.bananas = Long(object.bananas.value);
+    } else {
+      message.bananas = undefined;
+    }
     if (object.coins !== undefined && object.coins !== null) {
       for (const e of object.coins) {
         message.coins.push(Number(e.value));
@@ -1394,6 +1419,7 @@ export const SimpleWithWrappers = {
     message.name !== undefined && message.name !== null && (obj.name = ({ value: message.name }));
     message.age !== undefined && message.age !== null && (obj.age = ({ value: message.age }));
     message.enabled !== undefined && message.enabled !== null && (obj.enabled = ({ value: message.enabled }));
+    message.bananas !== undefined && message.bananas !== null && (obj.bananas = ({ value: message.bananas }));
     if (message.coins) {
       obj.coins = message.coins.map(e => ({ value: e }));
     } else {
@@ -1411,6 +1437,7 @@ export const SimpleWithWrappers = {
     message.name !== undefined && (obj.name = message.name);
     message.age !== undefined && (obj.age = message.age);
     message.enabled !== undefined && (obj.enabled = message.enabled);
+    message.bananas !== undefined && (obj.bananas = message.bananas);
     if (message.coins) {
       obj.coins = message.coins.map(e => e);
     } else {
@@ -2494,7 +2521,7 @@ if (util.Long !== Long as any) {
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
-type DeepPartial<T> = T extends Builtin
+export type DeepPartial<T> = T extends Builtin
   ? T
   : T extends Array<infer U>
   ? Array<DeepPartial<U>>

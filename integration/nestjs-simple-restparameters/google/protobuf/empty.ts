@@ -27,4 +27,6 @@ export interface Empty {
 export interface Empty_Original {
 }
 
+export const protobufPackage = 'google.protobuf'
+
 export const GOOGLE_PROTOBUF_PACKAGE_NAME = 'google.protobuf'

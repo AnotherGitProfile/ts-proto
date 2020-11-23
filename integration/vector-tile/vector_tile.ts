@@ -96,6 +96,8 @@ function longToNumber(long: Long) {
   return long.toNumber();
 }
 
+export const protobufPackage = 'vector_tile'
+
 export enum Tile_GeomType {
   UNKNOWN = 0,
   POINT = 1,
@@ -786,7 +788,7 @@ if (util.Long !== Long as any) {
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
-type DeepPartial<T> = T extends Builtin
+export type DeepPartial<T> = T extends Builtin
   ? T
   : T extends Array<infer U>
   ? Array<DeepPartial<U>>

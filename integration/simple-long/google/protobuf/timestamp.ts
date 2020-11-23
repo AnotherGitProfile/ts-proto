@@ -211,6 +211,8 @@ const baseTimestamp: object = {
   nanos: 0,
 };
 
+export const protobufPackage = 'google.protobuf'
+
 export const Timestamp = {
   encode(message: Timestamp, writer: Writer = Writer.create()): Writer {
     writer.uint32(8).int64(message.seconds);
@@ -294,7 +296,7 @@ export const Timestamp = {
 };
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
-type DeepPartial<T> = T extends Builtin
+export type DeepPartial<T> = T extends Builtin
   ? T
   : T extends Array<infer U>
   ? Array<DeepPartial<U>>

@@ -13,3 +13,5 @@ export interface Registration_Original {
   date: Timestamp_Original | undefined;
   perks: Any_Original | undefined;
 }
+
+export const protobufPackage = 'event'

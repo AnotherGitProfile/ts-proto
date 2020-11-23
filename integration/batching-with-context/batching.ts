@@ -157,7 +157,7 @@ export class EntityServiceClientImpl<Context extends DataLoaders> implements Ent
       return new DataLoader<string, Entity>((ids) => {
         const request = { ids };
         return this.BatchQuery(ctx, request).then(res => res.entities);
-      }, { cacheKeyFn: hash });
+      }, { cacheKeyFn: hash, ...ctx.rpcDataLoaderOptions });
     });
     return dl.load(id);
   }
@@ -175,7 +175,7 @@ export class EntityServiceClientImpl<Context extends DataLoaders> implements Ent
         return this.BatchMapQuery(ctx, request).then(res => {
           return ids.map(key => res.entities[key]);
         })
-      }, { cacheKeyFn: hash });
+      }, { cacheKeyFn: hash, ...ctx.rpcDataLoaderOptions });
     });
     return dl.load(id);
   }
@@ -195,7 +195,7 @@ export class EntityServiceClientImpl<Context extends DataLoaders> implements Ent
           return GetOnlyMethodResponse.decode(new Reader(response));
         })
         return Promise.all(responses);
-      }, { cacheKeyFn: hash });
+      }, { cacheKeyFn: hash, ...ctx.rpcDataLoaderOptions  });
     });
     return dl.load(request);
   }
@@ -214,11 +214,18 @@ interface Rpc<Context> {
 
 }
 
+export interface DataLoaderOptions {
+  cache?: boolean;
+}
+
 export interface DataLoaders {
+  rpcDataLoaderOptions?: DataLoaderOptions;
 
   getDataLoader<T>(identifier: string, constructorFn: () => T): T;
 
 }
+
+export const protobufPackage = 'batching'
 
 export const BatchQueryRequest = {
   encode(message: BatchQueryRequest, writer: Writer = Writer.create()): Writer {
@@ -921,7 +928,7 @@ export const Entity = {
 };
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
-type DeepPartial<T> = T extends Builtin
+export type DeepPartial<T> = T extends Builtin
   ? T
   : T extends Array<infer U>
   ? Array<DeepPartial<U>>
